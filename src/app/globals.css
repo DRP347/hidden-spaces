@@ -1,0 +1,286 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  background: #e7ddca;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #e7ddca;
+  color: #16202a;
+}
+
+body {
+  font-family: Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(36, 123, 117, 0.22);
+  color: #16202a;
+}
+
+.glass-light {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 253, 247, 0.48)),
+    rgba(255, 253, 247, 0.66);
+  box-shadow:
+    0 18px 60px rgba(22, 32, 42, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.glass-light-quiet {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(255, 253, 247, 0.34)),
+    rgba(255, 253, 247, 0.52);
+  box-shadow:
+    0 12px 36px rgba(22, 32, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px) saturate(132%);
+  -webkit-backdrop-filter: blur(14px) saturate(132%);
+}
+
+.glass-dark {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(22, 32, 42, 0.72);
+  box-shadow:
+    0 18px 50px rgba(22, 32, 42, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+}
+
+.field-grain::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  border-radius: inherit;
+  opacity: 0.13;
+  background-image:
+    linear-gradient(rgba(22, 32, 42, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 32, 42, 0.1) 1px, transparent 1px);
+  background-size: 5px 5px;
+  mix-blend-mode: soft-light;
+}
+
+.map-frame {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 13% 10%, rgba(255, 253, 247, 0.46), transparent 28%),
+    radial-gradient(circle at 87% 88%, rgba(111, 166, 161, 0.16), transparent 32%),
+    #e7ddca;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: #e7ddca;
+  font-family: Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.leaflet-tile-pane {
+  filter: saturate(0.85) contrast(0.95) brightness(0.95);
+}
+
+.leaflet-control-attribution {
+  border-radius: 999px 0 0 0;
+  background: rgba(255, 253, 247, 0.74) !important;
+  color: rgba(22, 32, 42, 0.62) !important;
+  font-size: 10px !important;
+  backdrop-filter: blur(12px);
+}
+
+.leaflet-control-attribution a {
+  color: rgba(36, 123, 117, 0.82) !important;
+}
+
+.hidden-space-marker {
+  position: relative;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: #16202a;
+  transform: translateZ(0);
+}
+
+.hidden-space-marker__halo {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--marker-accent) 22%, transparent) 0%,
+    color-mix(in srgb, var(--marker-accent) 8%, transparent) 42%,
+    transparent 72%
+  );
+  box-shadow: 0 12px 26px color-mix(in srgb, var(--marker-accent) 16%, transparent);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.hidden-space-marker__shell {
+  position: absolute;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--marker-accent) 42%, transparent);
+  border-radius: 999px;
+  background: rgba(255, 253, 247, 0.84);
+  box-shadow:
+    0 10px 24px rgba(22, 32, 42, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  transition:
+    border-color 220ms ease,
+    transform 220ms ease;
+}
+
+.hidden-space-marker__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--marker-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--marker-accent) 14%, transparent);
+}
+
+.hidden-space-marker__label {
+  position: absolute;
+  left: 50%;
+  bottom: 39px;
+  max-width: 210px;
+  padding: 6px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 999px;
+  background: rgba(255, 253, 247, 0.72);
+  box-shadow: 0 12px 32px rgba(22, 32, 42, 0.13);
+  color: #16202a;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-50%, 8px, 0) scale(0.96);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  white-space: nowrap;
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+}
+
+.hidden-space-marker:hover .hidden-space-marker__halo,
+.hidden-space-marker.is-selected .hidden-space-marker__halo {
+  transform: scale(1.2);
+}
+
+.hidden-space-marker:hover .hidden-space-marker__shell,
+.hidden-space-marker.is-selected .hidden-space-marker__shell {
+  border-color: color-mix(in srgb, var(--marker-accent) 68%, transparent);
+  transform: translateY(-3px) scale(1.04);
+}
+
+.hidden-space-marker:hover .hidden-space-marker__label,
+.hidden-space-marker.is-selected .hidden-space-marker__label {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.hidden-space-marker.is-selected::after {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 1px solid color-mix(in srgb, var(--marker-accent) 32%, transparent);
+  border-radius: 999px;
+  content: "";
+  animation: marker-pulse 1.8s ease-out infinite;
+}
+
+@keyframes marker-pulse {
+  from {
+    opacity: 0.72;
+    transform: scale(0.82);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.62);
+  }
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-scroll {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.gallery-scroll > * {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.admin-map-marker {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 4px solid #ffffff;
+  border-radius: 999px;
+  background: #0f766e;
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.28),
+    0 0 0 6px rgba(15, 118, 110, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
