@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 export function isAdminRequest(request: NextRequest) {
   const password = process.env.ADMIN_PASSWORD;
 
-  if (!password && process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV === "development") {
     return true;
   }
 

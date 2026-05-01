@@ -14,6 +14,10 @@ export function AdminPlacesClient() {
   const [places, setPlaces] = useState<Place[]>([]);
   const [query, setQuery] = useState("");
   const [source, setSource] = useState<"mongodb" | "mock" | "loading">("loading");
+  const [mongoConfigured, setMongoConfigured] = useState(false);
+  const [fallbackReason, setFallbackReason] = useState<
+    "missing-env" | "connection-error" | "network-access" | null
+  >(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +49,8 @@ export function AdminPlacesClient() {
       const data = (await response.json()) as {
         success?: boolean;
         source?: "mongodb" | "mock";
+        mongoConfigured?: boolean;
+        fallbackReason?: "missing-env" | "connection-error" | "network-access" | null;
         data?: Place[];
         places?: Place[];
         error?: string;
@@ -56,6 +62,8 @@ export function AdminPlacesClient() {
 
       setPlaces(data.data ?? data.places ?? []);
       setSource(data.source ?? "mock");
+      setMongoConfigured(Boolean(data.mongoConfigured));
+      setFallbackReason(data.fallbackReason ?? null);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Unable to load places.");
     } finally {
@@ -138,8 +146,11 @@ export function AdminPlacesClient() {
     <div className="grid gap-4">
       {source === "mock" ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          MongoDB is not configured. Public browsing uses mock data, but admin create/edit/delete needs
-          `MONGODB_URI`.
+          {mongoConfigured && fallbackReason === "connection-error"
+            ? "MongoDB is configured, but the server could not connect. Showing mock data until the database connection recovers."
+            : mongoConfigured && fallbackReason === "network-access"
+              ? "MongoDB is configured, but MongoDB Atlas is rejecting this machine/network. Add your current IP address in Atlas Network Access, then refresh."
+            : "MongoDB is not configured. Public browsing uses mock data, but admin create/edit/delete needs `MONGODB_URI`."}
         </div>
       ) : null}
       {error ? (

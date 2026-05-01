@@ -23,14 +23,26 @@ export async function connectToDatabase() {
     throw new Error("Missing MONGODB_URI environment variable.");
   }
 
-  if (global.mongooseCache?.conn) {
+  if (global.mongooseCache?.conn && mongoose.connection.readyState === 1) {
     return global.mongooseCache.conn;
+  }
+
+  if (global.mongooseCache?.conn && mongoose.connection.readyState !== 1) {
+    global.mongooseCache.conn = null;
+    global.mongooseCache.promise = null;
   }
 
   if (!global.mongooseCache?.promise) {
     global.mongooseCache!.promise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 8000,
+      family: 4,
+      heartbeatFrequencyMS: 10000,
+      maxIdleTimeMS: 30000,
+      maxPoolSize: 5,
+      minPoolSize: 0,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 20000,
+      tls: true,
     });
   }
 
@@ -42,4 +54,18 @@ export async function connectToDatabase() {
   }
 
   return global.mongooseCache!.conn;
+}
+
+export async function resetDatabaseConnection() {
+  global.mongooseCache = { conn: null, promise: null };
+
+  if (mongoose.connection.readyState !== 0) {
+    try {
+      await mongoose.disconnect();
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("[Hidden Spaces] MongoDB disconnect failed:", error);
+      }
+    }
+  }
 }

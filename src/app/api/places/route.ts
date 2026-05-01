@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       source: result.source,
+      mongoConfigured: result.mongoConfigured,
+      fallbackReason: result.fallbackReason ?? null,
       data: result.places,
       places: result.places,
     });

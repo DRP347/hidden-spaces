@@ -1,5 +1,5 @@
 import { mockPlaces } from "@/data/mockPlaces";
-import { connectToDatabase } from "@/lib/mongodb";
+import { connectToDatabase, resetDatabaseConnection } from "@/lib/mongodb";
 import { createImage, DEFAULT_IMAGE_URL, type ImageAsset } from "@/lib/placeUtils";
 import { PlaceModel } from "@/models/Place";
 import type {
@@ -36,12 +36,16 @@ type DatabasePlaceRecord = {
 export type PlacesResult = {
   source: "mongodb" | "mock";
   places: Place[];
+  mongoConfigured: boolean;
+  fallbackReason?: "missing-env" | "connection-error" | "network-access";
 };
 
 export async function listPlaces({ includePrivate = false } = {}): Promise<PlacesResult> {
   if (!process.env.MONGODB_URI) {
     return {
       source: "mock",
+      mongoConfigured: false,
+      fallbackReason: "missing-env",
       places: includePrivate
         ? mockPlaces
         : mockPlaces.filter((place) => place.visibility === "Public"),
@@ -58,15 +62,24 @@ export async function listPlaces({ includePrivate = false } = {}): Promise<Place
 
     return {
       source: "mongodb",
+      mongoConfigured: true,
       places,
     };
   } catch (error) {
+    if (isMongoNetworkError(error)) {
+      await resetDatabaseConnection();
+    }
+
     if (process.env.NODE_ENV === "development") {
       console.error("[Hidden Spaces] MongoDB listPlaces failed:", error);
     }
 
     return {
       source: "mock",
+      mongoConfigured: true,
+      fallbackReason: isAtlasNetworkAccessError(error)
+        ? "network-access"
+        : "connection-error",
       places: includePrivate
         ? mockPlaces
         : mockPlaces.filter((place) => place.visibility === "Public"),
@@ -87,6 +100,10 @@ export async function findPlace(id: string) {
 
     return doc ? toPlace(doc) : null;
   } catch (error) {
+    if (isMongoNetworkError(error)) {
+      await resetDatabaseConnection();
+    }
+
     if (process.env.NODE_ENV === "development") {
       console.error("[Hidden Spaces] MongoDB findPlace failed:", error);
     }
@@ -285,4 +302,35 @@ function normalizeSafetyLevel(value: unknown): SafetyLevel {
   }
 
   return "Comfortable";
+}
+
+function isMongoNetworkError(error: unknown) {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const name = "name" in error ? String(error.name) : "";
+  const message = "message" in error ? String(error.message) : "";
+
+  return (
+    name.includes("MongoNetworkError") ||
+    name.includes("MongoPoolClearedError") ||
+    message.includes("MongoNetworkError") ||
+    message.includes("SSL routines") ||
+    message.includes("tlsv1 alert")
+  );
+}
+
+function isAtlasNetworkAccessError(error: unknown) {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const message = "message" in error ? String(error.message) : "";
+
+  return (
+    message.includes("IP whitelist") ||
+    message.includes("isn't whitelisted") ||
+    message.includes("Could not connect to any servers in your MongoDB Atlas cluster")
+  );
 }
