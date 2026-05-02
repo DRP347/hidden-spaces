@@ -20,7 +20,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
         { success: false, error: "Place not found." },
         { status: 404 },
       );
-    }
+    } 
 
     return NextResponse.json({ success: true, data: place, place });
   } catch (error) {
