@@ -1,8 +1,9 @@
 "use client";
 
-import { Clock3, MapPin } from "lucide-react";
+import { Clock3, ExternalLink, MapPin } from "lucide-react";
 
 import { SpotVisual } from "@/components/site/SpotVisual";
+import { getGoogleMapsUrl } from "@/lib/site";
 import type { Spot } from "@/types/spot";
 
 export function SpotCard({
@@ -40,13 +41,24 @@ export function SpotCard({
             </span>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={() => onSelect(spot)}
-          className="mt-5 min-h-11 rounded-full bg-[#151515] px-4 py-2 text-sm font-bold text-[#FFFDF8] transition hover:bg-[#1E4E8C] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D99A3D] active:scale-[0.98]"
-        >
-          View field note
-        </button>
+        <div className="mt-5 grid gap-2">
+          <button
+            type="button"
+            onClick={() => onSelect(spot)}
+            className="min-h-11 rounded-full bg-[#151515] px-4 py-2 text-sm font-bold text-[#FFFDF8] transition hover:bg-[#1E4E8C] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D99A3D] active:scale-[0.98]"
+          >
+            View field note
+          </button>
+          <a
+            href={getGoogleMapsUrl(spot)}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#F5EFE6] px-4 py-2 text-sm font-bold text-[#473b2e] transition hover:bg-[#eadcc8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] active:scale-[0.98]"
+          >
+            Open in Maps
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </div>
       </div>
     </article>
   );

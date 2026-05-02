@@ -309,7 +309,7 @@ function NoResultsState() {
   return (
     <div className="glass-light-quiet pointer-events-none fixed left-1/2 top-[176px] z-20 w-[min(92vw,420px)] -translate-x-1/2 rounded-[24px] px-5 py-4 text-center text-ink">
       <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-mist">
-        No hidden spaces found
+        No exact match on this route
       </p>
       <p className="mt-1 text-sm font-semibold text-charcoal/78">
         Try a wider search or clear the active filter.

@@ -32,7 +32,7 @@ export function MapPreview({
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-[#5d5143]">
-          A lightweight preview for planning. Full interactive map layers can plug into the same curated spots later.
+          Use this field map to build a loose route across beaches, forts, lanes, cafés, and food stops.
         </p>
       </div>
 
