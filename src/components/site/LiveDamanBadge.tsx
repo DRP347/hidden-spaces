@@ -41,7 +41,7 @@ export function LiveDamanBadge() {
 
   return (
     <div
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/70 bg-white/70 px-4 py-2 text-sm font-semibold text-[#151515] shadow-[0_16px_40px_rgba(76,53,24,0.12)] backdrop-blur-md"
+      className="inline-flex min-h-10 max-w-[calc(100vw-1.5rem)] flex-wrap items-center gap-x-2 gap-y-1 rounded-[20px] border border-white/70 bg-white/70 px-3 py-2 text-xs font-semibold leading-none text-[#151515] shadow-[0_16px_40px_rgba(76,53,24,0.12)] backdrop-blur-md sm:min-h-11 sm:rounded-full sm:px-4 sm:text-sm"
       aria-live="polite"
     >
       <span className="relative flex h-2.5 w-2.5">

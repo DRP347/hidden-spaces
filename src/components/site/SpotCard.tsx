@@ -16,9 +16,9 @@ export function SpotCard({
   onSelect: (spot: Spot) => void;
 }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[28px] bg-[#FFFDF8] shadow-[0_22px_70px_rgba(75,55,29,0.12)] ring-1 ring-[#eadcc8] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_rgba(75,55,29,0.18)]">
-      <SpotVisual spot={spot} priority={priority} className="aspect-[4/3]" />
-      <div className="flex flex-1 flex-col p-5">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[24px] bg-[#FFFDF8] shadow-[0_18px_54px_rgba(75,55,29,0.1)] ring-1 ring-[#eadcc8] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_rgba(75,55,29,0.16)] sm:rounded-[28px]">
+      <SpotVisual spot={spot} priority={priority} className="aspect-[16/11] sm:aspect-[4/3]" />
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-xs font-bold text-[#6d604f]">
           <span className="inline-flex items-center gap-1">
             <MapPin className="h-3.5 w-3.5" />
@@ -30,7 +30,7 @@ export function SpotCard({
             {spot.bestTime}
           </span>
         </div>
-        <h3 className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.035em] text-[#151515]">
+        <h3 className="text-balance font-display text-[1.55rem] font-semibold leading-[1.04] tracking-[-0.035em] text-[#151515] sm:text-3xl">
           {spot.name}
         </h3>
         <p className="mt-3 text-[15px] leading-6 text-[#5f5345]">{spot.description}</p>

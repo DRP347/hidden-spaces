@@ -3,9 +3,9 @@ import { spotCategories } from "@/types/spot";
 export function Footer() {
   return (
     <footer className="border-t border-[#e8dac5] bg-[#FFFDF8]" aria-labelledby="footer-title">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:py-12 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
-          <h2 id="footer-title" className="font-display text-4xl font-semibold tracking-[-0.04em] text-[#151515]">
+          <h2 id="footer-title" className="text-balance font-display text-[2.35rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#151515] sm:text-4xl">
             Hidden Spaces Daman
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-[#5d5143]">

@@ -110,13 +110,13 @@ export function HomeExperience({ spots }: { spots: Spot[] }) {
         onSurprise={surpriseMe}
       />
 
-      <section id="spots" className="mx-auto max-w-6xl px-4 pb-10 pt-10 sm:px-6 lg:pb-14 lg:pt-14" aria-labelledby="spots-title">
+      <section id="spots" className="mx-auto max-w-6xl px-4 pb-10 pt-10 sm:px-6 md:pt-12 lg:pb-14 lg:pt-14" aria-labelledby="spots-title">
         <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#9E3F2F]">
               Choose the kind of Daman you want today
             </p>
-            <h2 id="spots-title" className="mt-2 max-w-2xl font-display text-4xl font-semibold leading-none tracking-[-0.045em] text-[#151515] sm:text-5xl">
+            <h2 id="spots-title" className="mt-2 max-w-2xl text-balance font-display text-[2.35rem] font-semibold leading-[0.98] tracking-[-0.045em] text-[#151515] sm:text-5xl">
               Quiet places that make Daman feel personal.
             </h2>
           </div>
@@ -128,7 +128,7 @@ export function HomeExperience({ spots }: { spots: Spot[] }) {
         <CategoryRail activeCategory={activeCategory} counts={counts} onChange={setActiveCategory} />
 
         {visibleSpots.length ? (
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {visibleSpots.map((spot, index) => (
               <SpotCard
                 key={spot.id}

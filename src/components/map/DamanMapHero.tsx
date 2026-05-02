@@ -47,7 +47,7 @@ export function DamanMapHero({
   const categories: ActiveCategory[] = ["All", ...spotCategories];
 
   return (
-    <section className="map-frame relative h-[100svh] min-h-[640px] lg:min-h-[720px]" aria-labelledby="hero-title">
+    <section className="map-frame relative h-[100svh] min-h-[620px] sm:min-h-[680px] lg:min-h-[720px]" aria-labelledby="hero-title">
       <SpotLeafletMap
         spots={spots}
         selectedSpot={selectedSpot}
@@ -63,14 +63,14 @@ export function DamanMapHero({
       </a>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 px-3 pt-3 sm:px-5 sm:pt-5">
-        <nav className="pointer-events-auto mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-[24px] border border-white/70 bg-[#FFFDF8]/68 px-3 py-2 shadow-[0_24px_80px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] backdrop-blur-2xl sm:rounded-full sm:px-4" aria-label="Main navigation">
-          <Link href="/" className="group inline-flex min-h-11 items-center gap-3 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C]">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-[#151515] font-display text-xl font-semibold text-[#FFFDF8] shadow-sm">H</span>
+        <nav className="pointer-events-auto mx-auto flex max-w-7xl items-center justify-between gap-2 rounded-[22px] border border-white/70 bg-[#FFFDF8]/68 px-3 py-2 shadow-[0_24px_80px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] backdrop-blur-2xl sm:rounded-full sm:px-4" aria-label="Main navigation">
+          <Link href="/" className="group inline-flex min-h-11 min-w-0 items-center gap-2 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] sm:gap-3">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#151515] font-display text-lg font-semibold text-[#FFFDF8] shadow-sm sm:h-10 sm:w-10 sm:text-xl">H</span>
             <span className="min-w-0">
               <span className="block truncate text-sm font-extrabold leading-none tracking-[-0.02em] text-[#151515] sm:text-base">
                 Hidden Spaces Daman
               </span>
-              <span className="mt-1 block truncate text-[11px] font-bold uppercase tracking-[0.12em] text-[#6b5b48]">
+              <span className="mt-1 hidden truncate text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b5b48] min-[390px]:block sm:text-[11px]">
                 Quiet coastal field guide
               </span>
             </span>
@@ -83,7 +83,7 @@ export function DamanMapHero({
         </nav>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-[88px] z-20 px-3 sm:px-5 lg:top-[104px]">
+      <div className="pointer-events-none absolute inset-x-0 top-[76px] z-20 px-3 sm:top-[88px] sm:px-5 lg:top-[104px]">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="pointer-events-auto w-fit">
             <LiveDamanBadge />
@@ -94,42 +94,42 @@ export function DamanMapHero({
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-3 pb-4 sm:px-5 sm:pb-6">
+      <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:px-5 sm:pb-6 ${selectedSpot ? "hidden md:block" : ""}`}>
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[minmax(0,720px)_1fr] lg:items-end">
-          <div className="pointer-events-auto rounded-[32px] border border-white/72 bg-[#FFFDF8]/68 p-4 shadow-[0_28px_100px_rgba(22,32,42,0.18),inset_0_1px_0_rgba(255,255,255,0.82)] backdrop-blur-2xl sm:p-5 lg:p-6">
-            <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.14em] text-[#9E3F2F] ring-1 ring-white/70">
+          <div className="glass-dock pointer-events-auto max-h-[48svh] overflow-y-auto overscroll-contain rounded-[26px] p-3 sm:max-h-none sm:rounded-[32px] sm:p-5 lg:p-6">
+            <p className="mb-2 inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#9E3F2F] ring-1 ring-white/70 sm:mb-3 sm:text-xs">
               <Compass className="h-3.5 w-3.5" />
               Live field map
             </p>
-            <h1 id="hero-title" className="max-w-3xl text-balance font-display text-[44px] font-semibold leading-[0.92] tracking-[-0.055em] text-[#151515] sm:text-[68px] lg:text-[82px]">
+            <h1 id="hero-title" className="max-w-3xl text-balance font-display text-[clamp(2.35rem,11vw,3.4rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-[#151515] sm:text-[clamp(3.75rem,8vw,5rem)] lg:text-[clamp(5rem,7vw,6.15rem)]">
               Open the map. Find the quiet side.
             </h1>
-            <p className="mt-4 max-w-2xl text-[15px] leading-7 text-[#55493c] sm:text-lg sm:leading-8">
+            <p className="mt-3 hidden max-w-2xl text-pretty text-[15px] leading-6 text-[#55493c] min-[390px]:block sm:mt-4 sm:text-lg sm:leading-8">
               A local field map for quiet beaches, Portuguese lanes, cafés, sunset corners, food stops, and photo walks around Nani Daman and Moti Daman.
             </p>
 
-            <div className="mt-5 grid gap-2 sm:grid-cols-[1fr_auto]">
+            <div className="mt-4 grid gap-2 sm:mt-5 sm:grid-cols-[1fr_auto]">
               <label className="relative block">
                 <span className="sr-only">Search hidden places in Daman</span>
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#9E3F2F]" />
+                <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#9E3F2F] sm:left-4 sm:h-5 sm:w-5" />
                 <input
                   value={query}
                   onChange={(event) => onQueryChange(event.target.value)}
                   placeholder="Search sunset, cafés, fort walls, beaches..."
-                  className="min-h-14 w-full rounded-[22px] border border-white/70 bg-white/78 px-12 text-base font-semibold text-[#151515] outline-none transition placeholder:text-[#8b7c68] focus:border-[#1E4E8C] focus:ring-4 focus:ring-[#1E4E8C]/10"
+                  className="min-h-12 w-full rounded-[20px] border border-white/70 bg-white/78 px-11 text-[15px] font-semibold text-[#151515] outline-none transition placeholder:text-[#8b7c68] focus:border-[#1E4E8C] focus:ring-4 focus:ring-[#1E4E8C]/10 sm:min-h-14 sm:rounded-[22px] sm:px-12 sm:text-base"
                 />
               </label>
               <button
                 type="button"
                 onClick={onSurprise}
-                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[22px] bg-[#D99A3D] px-5 text-sm font-extrabold text-[#151515] shadow-[0_16px_34px_rgba(217,154,61,0.28)] transition hover:-translate-y-0.5 hover:bg-[#e2a64a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] active:scale-[0.98]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[20px] bg-[#D99A3D] px-5 text-sm font-extrabold text-[#151515] shadow-[0_16px_34px_rgba(217,154,61,0.28)] transition hover:-translate-y-0.5 hover:bg-[#e2a64a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] active:scale-[0.98] sm:min-h-14 sm:rounded-[22px]"
               >
                 <Shuffle className="h-4 w-4" />
                 Surprise Me
               </button>
             </div>
 
-            <div className="-mx-1 mt-4 overflow-x-auto px-1 hide-scrollbar" aria-label="Filter map spots by category">
+            <div className="-mx-1 mt-3 overflow-x-auto px-1 hide-scrollbar sm:mt-4" aria-label="Filter map spots by category">
               <div className="flex min-w-max gap-2 py-1">
                 {categories.map((category) => {
                   const isActive = activeCategory === category;
@@ -140,7 +140,7 @@ export function DamanMapHero({
                       type="button"
                       onClick={() => onCategoryChange(category)}
                       aria-pressed={isActive}
-                      className={`min-h-11 rounded-full border px-4 py-2 text-sm font-bold shadow-sm backdrop-blur transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] active:scale-[0.98] ${
+                      className={`min-h-11 whitespace-nowrap rounded-full border px-3.5 py-2 text-sm font-bold shadow-sm backdrop-blur transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] active:scale-[0.98] sm:px-4 ${
                         isActive
                           ? "border-[#D99A3D]/70 bg-[#151515] text-[#FFFDF8] shadow-[0_16px_38px_rgba(21,21,21,0.18)]"
                           : "border-white/72 bg-white/54 text-[#473b2e] hover:-translate-y-0.5 hover:bg-white/80"

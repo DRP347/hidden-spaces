@@ -43,14 +43,14 @@ const routes = [
 
 export function RouteIdeas() {
   return (
-    <section id="routes" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16" aria-labelledby="routes-title">
-      <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+    <section id="routes" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-12 lg:py-16" aria-labelledby="routes-title">
+      <div className="grid gap-7 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
         <div>
           <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-[#9E3F2F]">
             <MapPinned className="h-4 w-4" />
             Build a loose route
           </p>
-          <h2 id="routes-title" className="mt-3 max-w-lg font-display text-4xl font-semibold leading-none tracking-[-0.04em] text-[#151515] sm:text-5xl">
+          <h2 id="routes-title" className="mt-3 max-w-lg text-balance font-display text-[2.35rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#151515] sm:text-5xl">
             Let the map give you a direction, not a schedule.
           </h2>
           <p className="mt-4 max-w-md text-sm leading-6 text-[#5d5143]">
@@ -59,8 +59,8 @@ export function RouteIdeas() {
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {routes.map((route) => (
-            <article key={route.title} className="group overflow-hidden rounded-[30px] bg-[#FFFDF8] shadow-[0_24px_76px_rgba(75,55,29,0.12)] ring-1 ring-[#eadcc8] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_96px_rgba(75,55,29,0.17)]">
-              <div className="relative aspect-[16/9] overflow-hidden">
+            <article key={route.title} className="group overflow-hidden rounded-[26px] bg-[#FFFDF8] shadow-[0_18px_54px_rgba(75,55,29,0.1)] ring-1 ring-[#eadcc8] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_96px_rgba(75,55,29,0.15)] sm:rounded-[30px]">
+              <div className="relative aspect-[16/10] overflow-hidden sm:aspect-[16/9]">
                 <ImageWithFallback
                   src={route.imageSrc}
                   alt={route.imageAlt}
@@ -75,12 +75,12 @@ export function RouteIdeas() {
                   {route.time}
                 </div>
               </div>
-              <div className="p-5">
+              <div className="p-4 sm:p-5">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#9E3F2F]">{route.mood}</p>
                   <ArrowRight className="h-4 w-4 text-[#D99A3D] transition group-hover:translate-x-1" />
                 </div>
-                <h3 className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.035em] text-[#151515]">
+                <h3 className="text-balance font-display text-[1.55rem] font-semibold leading-[1.04] tracking-[-0.035em] text-[#151515] sm:text-3xl">
                   {route.title}
                 </h3>
                 <p className="mt-3 text-sm leading-6 text-[#5d5143]">{route.text}</p>
