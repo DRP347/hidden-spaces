@@ -1,6 +1,7 @@
 export const spotCategories = [
   "Sunset",
-  "Peaceful Cafés",
+  "Peaceful",
+  "Cafés",
   "Photo Spots",
   "Beaches",
   "Heritage",
@@ -25,6 +26,12 @@ export type Spot = {
     lat: number;
     lng: number;
   };
+  imageSrc?: string;
+  imageAlt: string;
+  imageCredit?: string;
+  imageFocus?: string;
+  gradientFallback: string;
+  localImageHint?: string;
   image?: {
     src: string;
     alt: string;

@@ -4,7 +4,8 @@ export const DAMAN_CENTER: [number, number] = [20.409, 72.832];
 
 export const categoryColors: Record<SpotCategory, string> = {
   Sunset: "#D99A3D",
-  "Peaceful Cafés": "#9B7B55",
+  Peaceful: "#8FA382",
+  Cafés: "#9B7B55",
   "Photo Spots": "#25313D",
   Beaches: "#4F8FA8",
   Heritage: "#9E3F2F",

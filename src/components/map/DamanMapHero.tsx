@@ -56,13 +56,14 @@ export function DamanMapHero({
       />
 
       <div className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(255,253,248,0.34),transparent_24%,transparent_66%,rgba(245,239,230,0.48))]" />
+      <div className="pointer-events-none absolute inset-0 z-10 opacity-80 [background-image:radial-gradient(circle_at_18%_18%,rgba(217,154,61,0.18),transparent_28%),radial-gradient(circle_at_82%_24%,rgba(79,143,168,0.16),transparent_26%),radial-gradient(circle_at_72%_84%,rgba(158,63,47,0.12),transparent_24%)]" />
 
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-bold">
         Skip to content
       </a>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 px-3 pt-3 sm:px-5 sm:pt-5">
-        <nav className="pointer-events-auto mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-[24px] border border-white/65 bg-[#FFFDF8]/70 px-3 py-2 shadow-[0_18px_60px_rgba(22,32,42,0.13)] backdrop-blur-2xl sm:rounded-full sm:px-4" aria-label="Main navigation">
+        <nav className="pointer-events-auto mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-[24px] border border-white/70 bg-[#FFFDF8]/68 px-3 py-2 shadow-[0_24px_80px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] backdrop-blur-2xl sm:rounded-full sm:px-4" aria-label="Main navigation">
           <Link href="/" className="group inline-flex min-h-11 items-center gap-3 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C]">
             <span className="grid h-10 w-10 place-items-center rounded-full bg-[#151515] font-display text-xl font-semibold text-[#FFFDF8] shadow-sm">H</span>
             <span className="min-w-0">
@@ -88,14 +89,14 @@ export function DamanMapHero({
             <LiveDamanBadge />
           </div>
           <div className="pointer-events-auto hidden rounded-full border border-white/65 bg-[#FFFDF8]/68 px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-[#5d5143] shadow-[0_18px_54px_rgba(22,32,42,0.12)] backdrop-blur-2xl md:inline-flex">
-            10 field notes across Nani Daman, Moti Daman, Devka and Jampore
+            {counts.All ?? spots.length} field notes across Nani Daman, Moti Daman, Devka and Jampore
           </div>
         </div>
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-3 pb-4 sm:px-5 sm:pb-6">
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[minmax(0,720px)_1fr] lg:items-end">
-          <div className="pointer-events-auto rounded-[32px] border border-white/70 bg-[#FFFDF8]/70 p-4 shadow-[0_26px_90px_rgba(22,32,42,0.16)] backdrop-blur-2xl sm:p-5 lg:p-6">
+          <div className="pointer-events-auto rounded-[32px] border border-white/72 bg-[#FFFDF8]/68 p-4 shadow-[0_28px_100px_rgba(22,32,42,0.18),inset_0_1px_0_rgba(255,255,255,0.82)] backdrop-blur-2xl sm:p-5 lg:p-6">
             <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.14em] text-[#9E3F2F] ring-1 ring-white/70">
               <Compass className="h-3.5 w-3.5" />
               Live field map

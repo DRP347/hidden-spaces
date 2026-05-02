@@ -1,7 +1,8 @@
 import type { Spot } from "@/types/spot";
+import { getSpotImageSrc } from "@/lib/images";
 
-export function getGoogleMapsUrl(spot: Pick<Spot, "coordinates" | "name">) {
-  const query = `${spot.name} ${spot.coordinates.lat},${spot.coordinates.lng}`;
+export function getGoogleMapsUrl(spot: Pick<Spot, "coordinates">) {
+  const query = `${spot.coordinates.lat},${spot.coordinates.lng}`;
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
@@ -27,6 +28,7 @@ export function createItemListJsonLd(spots: Spot[]) {
         "@type": "TouristAttraction",
         name: spot.name,
         description: spot.description,
+        ...(getSpotImageSrc(spot) ? { image: getSpotImageSrc(spot) } : {}),
         address: {
           "@type": "PostalAddress",
           addressLocality: spot.area,

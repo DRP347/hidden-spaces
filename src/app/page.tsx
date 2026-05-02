@@ -1,8 +1,20 @@
 import { HomeExperience } from "@/components/site/HomeExperience";
-import { damanSpots, featuredSpots } from "@/data/spots";
+import { damanSpots } from "@/data/spots";
+import { listPlaces } from "@/lib/placeRepository";
 import { createDestinationJsonLd, createItemListJsonLd } from "@/lib/site";
+import { placesToSpots } from "@/lib/spotAdapter";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const result = await listPlaces();
+  const spots =
+    result.source === "mongodb"
+      ? placesToSpots(result.places)
+      : result.places.length
+        ? placesToSpots(result.places)
+        : damanSpots;
+  const featuredSpots = spots.filter((spot) => spot.isFeatured);
   const jsonLd = [createDestinationJsonLd(), createItemListJsonLd(featuredSpots)];
 
   return (
@@ -11,7 +23,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HomeExperience spots={damanSpots} />
+      <HomeExperience spots={spots} />
     </>
   );
 }

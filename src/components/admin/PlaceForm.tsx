@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, ImagePlus, Trash2, UploadCloud } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { slugify } from "@/lib/placeUtils";
+import { parseCoordinatePair, slugify } from "@/lib/placeUtils";
 import {
   placeCategories,
   type CrowdLevel,
@@ -29,6 +29,7 @@ type FormState = {
   name: string;
   slug: string;
   category: PlaceCategory;
+  coordinateInput: string;
   lat: number;
   lng: number;
   description: string;
@@ -94,6 +95,28 @@ export function PlaceForm({
     setError("");
     setUploadError("");
     setMessage("");
+  };
+
+  const handleCoordinateInput = (value: string) => {
+    const coordinates = parseCoordinatePair(value);
+
+    setState((current) => ({
+      ...current,
+      coordinateInput: value,
+      ...(coordinates
+        ? {
+            lat: Number(coordinates.lat.toFixed(6)),
+            lng: Number(coordinates.lng.toFixed(6)),
+          }
+        : {}),
+    }));
+    setMessage(coordinates ? "Coordinates converted to decimal degrees." : "");
+    setError(
+      value.trim() && !coordinates
+        ? "Paste coordinates as decimal values or DMS, for example 20°24'21.9\"N 72°50'02.6\"E."
+        : "",
+    );
+    setUploadError("");
   };
 
   const handleImageUpload = async (file: File | null, mode: "cover" | "gallery") => {
@@ -454,6 +477,15 @@ export function PlaceForm({
 
       <aside className="grid h-fit gap-4">
         <Panel title="Coordinates">
+          <Field label="Paste coordinates">
+            <input
+              type="text"
+              value={state.coordinateInput}
+              onChange={(event) => handleCoordinateInput(event.target.value)}
+              placeholder={`20°24'21.9"N 72°50'02.6"E`}
+              className={fieldClass}
+            />
+          </Field>
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Latitude">
               <input
@@ -664,6 +696,7 @@ function toFormState(place?: Place): FormState {
     name: place?.name ?? "",
     slug: place?.slug ?? "",
     category: place?.category ?? "Peaceful",
+    coordinateInput: "",
     lat: place?.coordinates.lat ?? 20.4142,
     lng: place?.coordinates.lng ?? 72.8321,
     description: place?.description ?? "",

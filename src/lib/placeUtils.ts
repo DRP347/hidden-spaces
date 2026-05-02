@@ -57,7 +57,51 @@ export function slugify(value: string) {
 }
 
 export function mapsUrl(place: Pick<Place, "coordinates">) {
-  return `https://www.google.com/maps?q=${place.coordinates.lat},${place.coordinates.lng}`;
+  const query = `${place.coordinates.lat},${place.coordinates.lng}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+export function parseCoordinatePair(value: unknown) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const input = value.trim();
+
+  if (!input) {
+    return null;
+  }
+
+  const dmsMatches = [...input.matchAll(dmsCoordinatePattern)];
+
+  if (dmsMatches.length >= 2) {
+    let lat: number | null = null;
+    let lng: number | null = null;
+
+    for (const match of dmsMatches) {
+      const parsed = dmsMatchToDecimal(match);
+
+      if (!parsed) continue;
+      if ((parsed.direction === "N" || parsed.direction === "S") && lat === null) {
+        lat = parsed.value;
+      }
+      if ((parsed.direction === "E" || parsed.direction === "W") && lng === null) {
+        lng = parsed.value;
+      }
+    }
+
+    if (lat !== null && lng !== null && isValidLatLng(lat, lng)) {
+      return { lat, lng };
+    }
+  }
+
+  const numbers = input.match(/[+-]?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
+
+  if (numbers.length >= 2 && isValidLatLng(numbers[0], numbers[1])) {
+    return { lat: numbers[0], lng: numbers[1] };
+  }
+
+  return null;
 }
 
 export function createImage(url: string, seed: string, alt: string): PlaceImage {
@@ -90,16 +134,19 @@ export function sanitizePlacePayload(input: unknown): PlacePayload {
     "Category",
     "Peaceful",
   );
-  const lat = numberField(
-    nestedNumber(record.coordinates, "lat") ?? record.lat,
-    "Latitude",
-  );
-  const lng = numberField(
-    nestedNumber(record.coordinates, "lng") ?? record.lng,
-    "Longitude",
-  );
+  const parsedCoordinates =
+    parseCoordinatePair(record.coordinates) ??
+    parseCoordinatePair(record.location) ??
+    parseCoordinatePair(record.coordinateString) ??
+    parseCoordinatePair(record.coordinatesText);
+  const lat = parsedCoordinates
+    ? parsedCoordinates.lat
+    : coordinateField(nestedNumber(record.coordinates, "lat") ?? record.lat, "Latitude");
+  const lng = parsedCoordinates
+    ? parsedCoordinates.lng
+    : coordinateField(nestedNumber(record.coordinates, "lng") ?? record.lng, "Longitude");
 
-  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+  if (!isValidLatLng(lat, lng)) {
     throw new Error("Coordinates are outside the valid latitude and longitude range.");
   }
 
@@ -205,6 +252,65 @@ function numberField(value: unknown, label: string) {
   }
 
   return numberValue;
+}
+
+function coordinateField(value: unknown, label: "Latitude" | "Longitude") {
+  if (typeof value === "string") {
+    const parsed = parseSingleCoordinate(value);
+
+    if (parsed !== null) {
+      return parsed;
+    }
+  }
+
+  return numberField(value, label);
+}
+
+const dmsCoordinatePattern =
+  /([+-]?\d+(?:\.\d+)?)\s*(?:°|deg|d)?\s*(?:(\d+(?:\.\d+)?)\s*(?:'|’|′|m|min)?)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|″|s|sec)?)?\s*([NSEW])/gi;
+
+function parseSingleCoordinate(value: string) {
+  const input = value.trim();
+  const match = [...input.matchAll(dmsCoordinatePattern)][0];
+
+  if (match) {
+    return dmsMatchToDecimal(match)?.value ?? null;
+  }
+
+  const numberValue = Number(input);
+  return Number.isFinite(numberValue) ? numberValue : null;
+}
+
+function dmsMatchToDecimal(match: RegExpMatchArray) {
+  const degrees = Number(match[1]);
+  const minutes = match[2] ? Number(match[2]) : 0;
+  const seconds = match[3] ? Number(match[3]) : 0;
+  const direction = match[4]?.toUpperCase();
+
+  if (
+    !Number.isFinite(degrees) ||
+    !Number.isFinite(minutes) ||
+    !Number.isFinite(seconds) ||
+    !direction
+  ) {
+    return null;
+  }
+
+  const sign = direction === "S" || direction === "W" || degrees < 0 ? -1 : 1;
+  const value = sign * (Math.abs(degrees) + minutes / 60 + seconds / 3600);
+
+  return { direction, value };
+}
+
+function isValidLatLng(lat: number, lng: number) {
+  return (
+    Number.isFinite(lat) &&
+    Number.isFinite(lng) &&
+    lat >= -90 &&
+    lat <= 90 &&
+    lng >= -180 &&
+    lng <= 180
+  );
 }
 
 function nestedNumber(value: unknown, key: "lat" | "lng") {

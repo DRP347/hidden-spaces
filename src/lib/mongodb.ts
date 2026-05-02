@@ -40,8 +40,8 @@ export async function connectToDatabase() {
       maxIdleTimeMS: 30000,
       maxPoolSize: 5,
       minPoolSize: 0,
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 20000,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 15000,
       tls: true,
     });
   }
