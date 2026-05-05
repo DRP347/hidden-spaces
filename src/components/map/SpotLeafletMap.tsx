@@ -54,7 +54,10 @@ export function SpotLeafletMap({
       zoom: 13,
       zoomControl: false,
       attributionControl: true,
-      scrollWheelZoom: true,
+      scrollWheelZoom: false,
+      touchZoom: true,
+      doubleClickZoom: true,
+      dragging: true,
     });
 
     L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
@@ -99,8 +102,8 @@ export function SpotLeafletMap({
         keyboard: true,
         icon: L.divIcon({
           className: "",
-          iconSize: [44, 44],
-          iconAnchor: [22, 22],
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
           html: createMarkerHtml(spot, accent, isSelected),
         }),
       });

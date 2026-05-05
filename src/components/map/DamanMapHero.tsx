@@ -2,13 +2,12 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ChevronDown, Compass, Search, Shuffle } from "lucide-react";
+import { ChevronDown, Compass, MousePointer2, Search, Shuffle } from "lucide-react";
 
 import { MapFallback } from "@/components/map/MapFallback";
 import { MapSpotPreview } from "@/components/map/MapSpotPreview";
 import { LiveDamanBadge } from "@/components/site/LiveDamanBadge";
 import type { ActiveCategory } from "@/components/site/CategoryRail";
-import { spotCategories } from "@/types/spot";
 import type { Spot } from "@/types/spot";
 
 const SpotLeafletMap = dynamic(
@@ -44,7 +43,14 @@ export function DamanMapHero({
   onViewDetails: (spot: Spot) => void;
   onSurprise: () => void;
 }) {
-  const categories: ActiveCategory[] = ["All", ...spotCategories];
+  const preferredHeroCategories: ActiveCategory[] = ["All", "Sunset", "Peaceful", "Beaches", "Heritage", "Food"];
+  const categories = preferredHeroCategories.filter(
+    (category) => category === "All" || category === activeCategory || (counts[category] ?? 0) > 0,
+  );
+
+  if (!categories.includes(activeCategory)) {
+    categories.push(activeCategory);
+  }
 
   return (
     <section className="map-frame relative h-[100svh] min-h-[620px] sm:min-h-[680px] lg:min-h-[720px]" aria-labelledby="hero-title">
@@ -95,17 +101,18 @@ export function DamanMapHero({
       </div>
 
       <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:px-5 sm:pb-6 ${selectedSpot ? "hidden md:block" : ""}`}>
-        <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[minmax(0,720px)_1fr] lg:items-end">
-          <div className="glass-dock pointer-events-auto max-h-[48svh] overflow-y-auto overscroll-contain rounded-[26px] p-3 sm:max-h-none sm:rounded-[32px] sm:p-5 lg:p-6">
+        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-[minmax(360px,560px)_1fr] md:items-end lg:grid-cols-[minmax(380px,520px)_1fr] xl:grid-cols-[minmax(400px,540px)_1fr]">
+          <div className="glass-dock pointer-events-auto max-h-[45svh] overflow-y-auto overscroll-contain rounded-[24px] p-3 sm:max-h-none sm:rounded-[28px] sm:p-4 md:max-w-[560px] lg:max-w-[520px] lg:p-5 xl:max-w-[540px]">
             <p className="mb-2 inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#9E3F2F] ring-1 ring-white/70 sm:mb-3 sm:text-xs">
               <Compass className="h-3.5 w-3.5" />
               Live field map
             </p>
-            <h1 id="hero-title" className="max-w-3xl text-balance font-display text-[clamp(2.35rem,11vw,3.4rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-[#151515] sm:text-[clamp(3.75rem,8vw,5rem)] lg:text-[clamp(5rem,7vw,6.15rem)]">
-              Open the map. Find the quiet side.
+            <h1 id="hero-title" className="max-w-[9ch] text-balance font-display text-[clamp(2.45rem,10vw,3.35rem)] font-semibold leading-[0.96] tracking-[-0.052em] text-[#151515] sm:text-[clamp(3rem,7vw,4.65rem)] lg:text-[clamp(3.75rem,5.4vw,5.25rem)]">
+              <span className="block">Open the map.</span>
+              <span className="block">Find the quiet side.</span>
             </h1>
-            <p className="mt-3 hidden max-w-2xl text-pretty text-[15px] leading-6 text-[#55493c] min-[390px]:block sm:mt-4 sm:text-lg sm:leading-8">
-              A local field map for quiet beaches, Portuguese lanes, cafés, sunset corners, food stops, and photo walks around Nani Daman and Moti Daman.
+            <p className="mt-3 hidden max-w-[38rem] text-pretty text-[15px] leading-6 text-[#55493c] min-[390px]:block sm:text-base sm:leading-7">
+              Quiet beaches, old lanes, cafés, sunset corners, and photo walks around Daman.
             </p>
 
             <div className="mt-4 grid gap-2 sm:mt-5 sm:grid-cols-[1fr_auto]">
@@ -130,7 +137,7 @@ export function DamanMapHero({
             </div>
 
             <div className="-mx-1 mt-3 overflow-x-auto px-1 hide-scrollbar sm:mt-4" aria-label="Filter map spots by category">
-              <div className="flex min-w-max gap-2 py-1">
+              <div className="flex min-w-max gap-2 py-1 md:min-w-0 md:flex-wrap">
                 {categories.map((category) => {
                   const isActive = activeCategory === category;
 
@@ -154,6 +161,20 @@ export function DamanMapHero({
                   );
                 })}
               </div>
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/55 pt-3 text-xs font-semibold text-[#6d604f]">
+              <span className="inline-flex items-center gap-1.5">
+                <MousePointer2 className="h-3.5 w-3.5 text-[#9E3F2F]" />
+                Drag map · scroll for notes
+              </span>
+              <a
+                href="#spots"
+                className="inline-flex min-h-10 items-center gap-1 rounded-full bg-white/62 px-3 py-2 font-bold text-[#25313D] ring-1 ring-white/70 transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] lg:hidden"
+              >
+                Field notes below
+                <ChevronDown className="h-3.5 w-3.5" />
+              </a>
             </div>
           </div>
 

@@ -68,15 +68,15 @@ textarea {
 }
 
 .glass-dock {
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.62);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 253, 247, 0.5)),
-    rgba(255, 253, 247, 0.66);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.66), rgba(255, 253, 247, 0.42)),
+    rgba(255, 253, 247, 0.58);
   box-shadow:
-    0 22px 72px rgba(76, 53, 24, 0.15),
+    0 20px 70px rgba(15, 23, 42, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.84);
-  backdrop-filter: blur(20px) saturate(142%);
-  -webkit-backdrop-filter: blur(20px) saturate(142%);
+  backdrop-filter: blur(18px) saturate(138%);
+  -webkit-backdrop-filter: blur(18px) saturate(138%);
 }
 
 .glass-light-quiet {
@@ -154,8 +154,8 @@ textarea {
 .hidden-space-marker {
   position: relative;
   display: grid;
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   place-items: center;
   padding: 0;
   border: 0;
@@ -167,16 +167,16 @@ textarea {
 
 .hidden-space-marker__halo {
   position: absolute;
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--marker-accent) 22%, transparent) 0%,
-    color-mix(in srgb, var(--marker-accent) 8%, transparent) 42%,
-    transparent 72%
+    color-mix(in srgb, var(--marker-accent) 18%, transparent) 0%,
+    color-mix(in srgb, var(--marker-accent) 7%, transparent) 44%,
+    transparent 74%
   );
-  box-shadow: 0 12px 26px color-mix(in srgb, var(--marker-accent) 16%, transparent);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--marker-accent) 14%, transparent);
   transition:
     opacity 220ms ease,
     transform 220ms ease;
@@ -185,32 +185,32 @@ textarea {
 .hidden-space-marker__shell {
   position: absolute;
   display: grid;
-  width: 28px;
-  height: 28px;
+  width: 18px;
+  height: 18px;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--marker-accent) 42%, transparent);
+  border: 1px solid color-mix(in srgb, var(--marker-accent) 52%, transparent);
   border-radius: 999px;
-  background: rgba(255, 253, 247, 0.84);
+  background: rgba(255, 253, 247, 0.9);
   box-shadow:
-    0 10px 24px rgba(22, 32, 42, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+    0 8px 18px rgba(22, 32, 42, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
   transition:
     border-color 220ms ease,
     transform 220ms ease;
 }
 
 .hidden-space-marker__dot {
-  width: 12px;
-  height: 12px;
+  width: 7px;
+  height: 7px;
   border-radius: 999px;
   background: var(--marker-accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--marker-accent) 14%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--marker-accent) 12%, transparent);
 }
 
 .hidden-space-marker__label {
   position: absolute;
   left: 50%;
-  bottom: 39px;
+  bottom: 31px;
   max-width: 210px;
   padding: 6px 11px;
   border: 1px solid rgba(255, 255, 255, 0.58);
@@ -234,13 +234,13 @@ textarea {
 
 .hidden-space-marker:hover .hidden-space-marker__halo,
 .hidden-space-marker.is-selected .hidden-space-marker__halo {
-  transform: scale(1.2);
+  transform: scale(1.34);
 }
 
 .hidden-space-marker:hover .hidden-space-marker__shell,
 .hidden-space-marker.is-selected .hidden-space-marker__shell {
   border-color: color-mix(in srgb, var(--marker-accent) 68%, transparent);
-  transform: translateY(-3px) scale(1.04);
+  transform: translateY(-2px) scale(1.16);
 }
 
 .hidden-space-marker:hover .hidden-space-marker__label,
@@ -251,8 +251,8 @@ textarea {
 
 .hidden-space-marker.is-selected::after {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border: 1px solid color-mix(in srgb, var(--marker-accent) 32%, transparent);
   border-radius: 999px;
   content: "";
