@@ -1,19 +1,13 @@
 import { HomeExperience } from "@/components/site/HomeExperience";
-import { damanSpots } from "@/data/spots";
-import { listPlaces } from "@/lib/placeRepository";
+import { getPublicSpots } from "@/lib/publicSpots";
 import { createDestinationJsonLd, createItemListJsonLd } from "@/lib/site";
-import { placesToSpots } from "@/lib/spotAdapter";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Home() {
-  const result = await listPlaces();
-  const spots =
-    result.source === "mongodb"
-      ? placesToSpots(result.places)
-      : result.places.length
-        ? placesToSpots(result.places)
-        : damanSpots;
+  const result = await getPublicSpots();
+  const spots = result.spots;
   const featuredSpots = spots.filter((spot) => spot.isFeatured);
   const jsonLd = [createDestinationJsonLd(), createItemListJsonLd(featuredSpots)];
 
@@ -23,7 +17,18 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HomeExperience spots={spots} />
+      <HomeExperience
+        spots={spots}
+        dataStatus={{
+          source: result.source,
+          count: result.count,
+          dbStatus: result.dbStatus,
+          notice:
+            result.notice && (process.env.NODE_ENV !== "production" || result.dbStatus.connected)
+              ? result.notice
+              : null,
+        }}
+      />
     </>
   );
 }

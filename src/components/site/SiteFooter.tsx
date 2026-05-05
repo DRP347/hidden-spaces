@@ -1,6 +1,6 @@
 import { spotCategories } from "@/types/spot";
 
-export function Footer() {
+export function SiteFooter() {
   return (
     <footer className="border-t border-[#e8dac5] bg-[#FFFDF8]" aria-labelledby="footer-title">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:py-12 lg:grid-cols-[1.2fr_0.8fr]">

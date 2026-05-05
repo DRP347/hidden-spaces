@@ -4,9 +4,10 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, ImagePlus, Trash2, UploadCloud } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { parseCoordinatePair, slugify } from "@/lib/placeUtils";
+import type { MongoStatus } from "@/lib/mongodb";
 import {
   placeCategories,
   type CrowdLevel,
@@ -73,6 +74,7 @@ export function PlaceForm({
   const [uploadError, setUploadError] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [dbStatus, setDbStatus] = useState<MongoStatus | null>(null);
 
   const canSave = useMemo(
     () =>
@@ -82,6 +84,49 @@ export function PlaceForm({
       Number.isFinite(state.lng),
     [state],
   );
+  const canWrite = Boolean(dbStatus?.connected);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadDatabaseStatus() {
+      try {
+        const response = await fetch("/api/health/db", { cache: "no-store" });
+        const data = (await response.json()) as MongoStatus & {
+          configured?: boolean;
+          connected?: boolean;
+          errorType?: MongoStatus["errorType"];
+          message?: string;
+        };
+
+        if (!ignore) {
+          setDbStatus({
+            configured: Boolean(data.configured),
+            connected: Boolean(data.connected && response.ok),
+            errorType: data.errorType ?? null,
+            message: data.message ?? "MongoDB status is unavailable.",
+            source: data.connected && response.ok ? "database" : "fallback",
+          });
+        }
+      } catch {
+        if (!ignore) {
+          setDbStatus({
+            configured: false,
+            connected: false,
+            errorType: "UNKNOWN",
+            message: "Unable to check MongoDB status.",
+            source: "fallback",
+          });
+        }
+      }
+    }
+
+    loadDatabaseStatus();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setState((current) => ({
@@ -180,6 +225,13 @@ export function PlaceForm({
 
     if (!canSave) {
       setError("Name, description, and valid coordinates are required.");
+      return;
+    }
+
+    if (!canWrite) {
+      setError(
+        "MongoDB is unavailable. Check Atlas Network Access and Vercel Environment Variables before saving.",
+      );
       return;
     }
 
@@ -555,6 +607,12 @@ export function PlaceForm({
             {error}
           </div>
         ) : null}
+        {dbStatus && !dbStatus.connected ? (
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <p className="font-bold">Database writes are disabled.</p>
+            <p className="mt-1 leading-6">{dbStatus.message}</p>
+          </div>
+        ) : null}
         {message ? (
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
             {message}
@@ -563,7 +621,7 @@ export function PlaceForm({
 
         <button
           type="submit"
-          disabled={isSaving || !canSave}
+          disabled={isSaving || !canSave || !canWrite}
           className="min-h-12 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-300"
         >
           {isSaving ? "Saving..." : mode === "edit" ? "Save changes" : "Create place"}

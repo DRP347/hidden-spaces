@@ -1,5 +1,12 @@
-import { mockPlaces } from "@/data/mockPlaces";
-import { connectToDatabase, resetDatabaseConnection } from "@/lib/mongodb";
+import { getFallbackPlaces } from "@/lib/fallbackPlaces";
+import {
+  createMongoStatus,
+  getMongoStatus,
+  resetDatabaseConnection,
+  type DataSource,
+  type MongoErrorType,
+  type MongoStatus,
+} from "@/lib/mongodb";
 import { createImage, DEFAULT_IMAGE_URL, type ImageAsset } from "@/lib/placeUtils";
 import { PlaceModel } from "@/models/Place";
 import type {
@@ -34,86 +41,66 @@ type DatabasePlaceRecord = {
 };
 
 export type PlacesResult = {
-  source: "mongodb" | "mock";
+  source: DataSource;
   places: Place[];
   mongoConfigured: boolean;
-  fallbackReason?: "missing-env" | "connection-error" | "network-access";
+  dbStatus: MongoStatus;
+  fallbackReason?: MongoErrorType;
 };
 
 export async function listPlaces({ includePrivate = false } = {}): Promise<PlacesResult> {
-  if (!process.env.MONGODB_URI) {
-    return {
-      source: "mock",
-      mongoConfigured: false,
-      fallbackReason: "missing-env",
-      places: includePrivate
-        ? mockPlaces
-        : mockPlaces.filter((place) => place.visibility === "Public"),
-    };
+  const dbStatus = await getMongoStatus("database");
+
+  if (!dbStatus.connected) {
+    return placesFallbackResult(dbStatus, includePrivate);
   }
 
   try {
-    await connectToDatabase();
-
     const docs = await PlaceModel.find({}).sort({ updatedAt: -1, name: 1 }).lean();
     const places = docs
       .map(toPlace)
       .filter((place) => includePrivate || place.visibility === "Public");
 
     return {
-      source: "mongodb",
+      source: "database",
       mongoConfigured: true,
+      dbStatus,
       places,
     };
   } catch (error) {
-    if (isMongoNetworkError(error)) {
-      await resetDatabaseConnection();
-    }
-
     if (process.env.NODE_ENV === "development") {
-      console.error("[Hidden Spaces] MongoDB listPlaces failed:", error);
+      console.error("[Hidden Spaces] MongoDB listPlaces failed:", getSafeErrorName(error));
     }
 
-    return {
-      source: "mock",
-      mongoConfigured: true,
-      fallbackReason: isAtlasNetworkAccessError(error)
-        ? "network-access"
-        : "connection-error",
-      places: includePrivate
-        ? mockPlaces
-        : mockPlaces.filter((place) => place.visibility === "Public"),
-    };
+    await resetDatabaseConnection();
+    return placesFallbackResult(createMongoStatus(error, "fallback"), includePrivate);
   }
 }
 
 export async function findPlace(id: string) {
-  if (!process.env.MONGODB_URI) {
-    return getMockPlace(id);
+  const dbStatus = await getMongoStatus("database");
+
+  if (!dbStatus.connected) {
+    return getFallbackPlace(id);
   }
 
   try {
-    await connectToDatabase();
-
     const query = isObjectIdLike(id) ? { _id: id } : { slug: id };
     const doc = await PlaceModel.findOne(query).lean();
 
     return doc ? toPlace(doc) : null;
   } catch (error) {
-    if (isMongoNetworkError(error)) {
-      await resetDatabaseConnection();
-    }
-
     if (process.env.NODE_ENV === "development") {
-      console.error("[Hidden Spaces] MongoDB findPlace failed:", error);
+      console.error("[Hidden Spaces] MongoDB findPlace failed:", getSafeErrorName(error));
     }
 
-    return getMockPlace(id);
+    await resetDatabaseConnection();
+    return getFallbackPlace(id);
   }
 }
 
 export function toPlace(record: DatabasePlaceRecord): Place {
-  const fallback = mockPlaces[0];
+  const fallback = getFallbackPlaces()[0];
   const id =
     typeof record.id === "string"
       ? record.id
@@ -163,8 +150,25 @@ export function toPlace(record: DatabasePlaceRecord): Place {
   };
 }
 
-function getMockPlace(id: string) {
-  return mockPlaces.find((place) => place.id === id || place.slug === id) ?? null;
+function placesFallbackResult(dbStatus: MongoStatus, includePrivate: boolean): PlacesResult {
+  const places = getFallbackPlaces().filter(
+    (place) => includePrivate || place.visibility === "Public",
+  );
+
+  return {
+    source: "fallback",
+    places,
+    mongoConfigured: dbStatus.configured,
+    dbStatus: {
+      ...dbStatus,
+      source: "fallback",
+    },
+    fallbackReason: dbStatus.errorType,
+  };
+}
+
+function getFallbackPlace(id: string) {
+  return getFallbackPlaces().find((place) => place.id === id || place.slug === id) ?? null;
 }
 
 function objectIdToString(value: unknown) {
@@ -304,33 +308,11 @@ function normalizeSafetyLevel(value: unknown): SafetyLevel {
   return "Comfortable";
 }
 
-function isMongoNetworkError(error: unknown) {
+function getSafeErrorName(error: unknown) {
   if (!error || typeof error !== "object") {
-    return false;
+    return "Unknown database error";
   }
 
-  const name = "name" in error ? String(error.name) : "";
-  const message = "message" in error ? String(error.message) : "";
-
-  return (
-    name.includes("MongoNetworkError") ||
-    name.includes("MongoPoolClearedError") ||
-    message.includes("MongoNetworkError") ||
-    message.includes("SSL routines") ||
-    message.includes("tlsv1 alert")
-  );
-}
-
-function isAtlasNetworkAccessError(error: unknown) {
-  if (!error || typeof error !== "object") {
-    return false;
-  }
-
-  const message = "message" in error ? String(error.message) : "";
-
-  return (
-    message.includes("IP whitelist") ||
-    message.includes("isn't whitelisted") ||
-    message.includes("Could not connect to any servers in your MongoDB Atlas cluster")
-  );
+  const name = "name" in error ? String(error.name) : "DatabaseError";
+  return name;
 }

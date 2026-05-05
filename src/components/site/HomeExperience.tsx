@@ -2,17 +2,32 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { DamanMapHero } from "@/components/map/DamanMapHero";
-import { CategoryRail, type ActiveCategory } from "@/components/site/CategoryRail";
-import { Footer } from "@/components/site/Footer";
-import { GoldenHourGuide } from "@/components/site/GoldenHourGuide";
-import { RouteIdeas } from "@/components/site/RouteIdeas";
-import { SpotCard } from "@/components/site/SpotCard";
+import { MapHero } from "@/components/map/MapHero";
+import type { ActiveCategory } from "@/components/site/CategoryRail";
+import { FieldNotesSection } from "@/components/site/FieldNotesSection";
+import { PlanningSection } from "@/components/site/PlanningSection";
+import { RouteSection } from "@/components/site/RouteSection";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { SpotDetailsModal } from "@/components/site/SpotDetailsModal";
+import type { DataSource, MongoStatus } from "@/lib/mongodb";
+import type { PublicDataNotice } from "@/lib/publicSpots";
 import { getCategoryCounts } from "@/lib/site";
 import type { Spot } from "@/types/spot";
 
-export function HomeExperience({ spots }: { spots: Spot[] }) {
+type HomeDataStatus = {
+  source: DataSource;
+  count: number;
+  dbStatus: MongoStatus;
+  notice: PublicDataNotice | null;
+};
+
+export function HomeExperience({
+  spots,
+  dataStatus,
+}: {
+  spots: Spot[];
+  dataStatus: HomeDataStatus;
+}) {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All");
   const [selectedSpot, setSelectedSpot] = useState<Spot | null>(null);
@@ -95,8 +110,8 @@ export function HomeExperience({ spots }: { spots: Spot[] }) {
   }, [detailSpot]);
 
   return (
-    <main id="main-content" className="min-h-screen overflow-x-hidden bg-[#F5EFE6] text-[#151515]">
-      <DamanMapHero
+    <main id="main-content" className="page-shell min-h-screen overflow-x-hidden bg-[#F5EFE6] text-[#151515]">
+      <MapHero
         spots={mapSpots}
         selectedSpot={selectedSpot}
         query={query}
@@ -110,88 +125,53 @@ export function HomeExperience({ spots }: { spots: Spot[] }) {
         onSurprise={surpriseMe}
       />
 
-      <section id="spots" className="mx-auto max-w-6xl px-4 pb-10 pt-10 sm:px-6 md:pt-12 lg:pb-14 lg:pt-14" aria-labelledby="spots-title">
-        <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#9E3F2F]">
-              Choose the kind of Daman you want today
-            </p>
-            <h2 id="spots-title" className="mt-2 max-w-2xl text-balance font-display text-[2.35rem] font-semibold leading-[0.98] tracking-[-0.045em] text-[#151515] sm:text-5xl">
-              Quiet places that make Daman feel personal.
-            </h2>
-          </div>
-          <p className="max-w-md text-sm leading-6 text-[#5d5143]">
-            Start with a mood, then let the route stay loose. Every card is designed to be useful before you leave.
-          </p>
-        </div>
+      <DataSourceNotice dataStatus={dataStatus} />
 
-        <CategoryRail activeCategory={activeCategory} counts={counts} onChange={setActiveCategory} />
+      <FieldNotesSection
+        spots={visibleSpots}
+        query={query}
+        activeCategory={activeCategory}
+        counts={counts}
+        onCategoryChange={setActiveCategory}
+        onSelectSpot={openDetails}
+        onSurprise={surpriseMe}
+        onReset={() => {
+          setQuery("");
+          setActiveCategory("All");
+        }}
+      />
 
-        {visibleSpots.length ? (
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {visibleSpots.map((spot, index) => (
-              <SpotCard
-                key={spot.id}
-                spot={spot}
-                priority={index < 3}
-                onSelect={openDetails}
-              />
-            ))}
-          </div>
-        ) : (
-          <EmptyState
-            query={query}
-            onSurprise={surpriseMe}
-            onReset={() => {
-              setQuery("");
-              setActiveCategory("All");
-            }}
-          />
-        )}
-      </section>
-
-      <RouteIdeas />
-      <GoldenHourGuide />
-      <Footer />
+      <RouteSection />
+      <PlanningSection />
+      <SiteFooter />
       <SpotDetailsModal spot={detailSpot} onClose={() => setDetailSpot(null)} />
     </main>
   );
 }
 
-function EmptyState({
-  query,
-  onReset,
-  onSurprise,
-}: {
-  query: string;
-  onReset: () => void;
-  onSurprise: () => void;
-}) {
+function DataSourceNotice({ dataStatus }: { dataStatus: HomeDataStatus }) {
+  if (!dataStatus.notice) {
+    return null;
+  }
+
+  const isWarning = dataStatus.notice.tone === "warning";
+
   return (
-    <div className="mt-6 rounded-[30px] border border-[#eadcc8] bg-[#FFFDF8] p-8 text-center shadow-sm">
-      <p className="font-display text-4xl font-semibold tracking-[-0.04em] text-[#151515]">
-        No exact match.
-      </p>
-      <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#5d5143]">
-        {query.trim()
-          ? `No field notes matched “${query.trim()}”. Try sunset, cafés, beaches, fort walls, or hit Surprise Me.`
-          : "Try another category, clear the filter, or hit Surprise Me to let the map choose a place."}
-      </p>
-      <div className="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
-        <button
-          type="button"
-          onClick={onSurprise}
-          className="min-h-11 rounded-full bg-[#D99A3D] px-5 py-2 text-sm font-bold text-[#151515] transition hover:bg-[#e2a64a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C]"
-        >
-          Surprise Me
-        </button>
-        <button
-          type="button"
-          onClick={onReset}
-          className="min-h-11 rounded-full bg-[#151515] px-5 py-2 text-sm font-bold text-white transition hover:bg-[#1E4E8C] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D99A3D]"
-        >
-          Show all hidden spaces
-        </button>
+    <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
+      <div
+        className={`rounded-2xl border px-4 py-3 text-sm shadow-sm ${
+          isWarning
+            ? "border-amber-200 bg-amber-50 text-amber-900"
+            : "border-[#D7E7DF] bg-[#F2F8F4] text-[#2c5f53]"
+        }`}
+      >
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-bold">{dataStatus.notice.title}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] opacity-75">
+            {dataStatus.source} · {dataStatus.count} field notes
+          </p>
+        </div>
+        <p className="mt-1 leading-6">{dataStatus.notice.message}</p>
       </div>
     </div>
   );

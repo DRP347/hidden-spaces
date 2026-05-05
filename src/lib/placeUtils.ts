@@ -1,4 +1,3 @@
-import { mockPlaces } from "@/data/mockPlaces";
 import {
   placeCategories,
   type CrowdLevel,
@@ -114,10 +113,6 @@ export function createImage(url: string, seed: string, alt: string): PlaceImage 
     width: 1200,
     height: 900,
   };
-}
-
-export function getMockPlace(id: string) {
-  return mockPlaces.find((place) => place.id === id || place.slug === id) ?? null;
 }
 
 export function sanitizePlacePayload(input: unknown): PlacePayload {

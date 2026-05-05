@@ -16,7 +16,7 @@ export function SpotVisual({
   const fallback = spot.gradientFallback || spot.gradient;
 
   return (
-    <div className={`group relative overflow-hidden bg-[#EADDC8] ${className}`}>
+    <div className={`group relative h-full w-full overflow-hidden bg-[#EADDC8] ${className}`}>
       <ImageWithFallback
         src={imageSrc}
         alt={imageAlt}

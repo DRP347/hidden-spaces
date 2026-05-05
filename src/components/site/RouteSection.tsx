@@ -41,9 +41,9 @@ const routes = [
   },
 ];
 
-export function RouteIdeas() {
+export function RouteSection() {
   return (
-    <section id="routes" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-12 lg:py-16" aria-labelledby="routes-title">
+    <section id="routes" className="section-shell mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-12 lg:py-16" aria-labelledby="routes-title">
       <div className="grid gap-7 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
         <div>
           <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-[#9E3F2F]">

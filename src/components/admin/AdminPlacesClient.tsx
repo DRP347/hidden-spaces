@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { useScrollLock } from "@/hooks/useScrollLock";
+import type { DataSource, MongoStatus } from "@/lib/mongodb";
 import type { Place } from "@/types/placeTypes";
 
 export function AdminPlacesClient() {
@@ -13,11 +14,8 @@ export function AdminPlacesClient() {
 
   const [places, setPlaces] = useState<Place[]>([]);
   const [query, setQuery] = useState("");
-  const [source, setSource] = useState<"mongodb" | "mock" | "loading">("loading");
-  const [mongoConfigured, setMongoConfigured] = useState(false);
-  const [fallbackReason, setFallbackReason] = useState<
-    "missing-env" | "connection-error" | "network-access" | null
-  >(null);
+  const [source, setSource] = useState<DataSource | "loading">("loading");
+  const [dbStatus, setDbStatus] = useState<MongoStatus | null>(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -48,9 +46,9 @@ export function AdminPlacesClient() {
       const response = await fetch("/api/places?admin=1", { cache: "no-store" });
       const data = (await response.json()) as {
         success?: boolean;
-        source?: "mongodb" | "mock";
+        source?: DataSource;
         mongoConfigured?: boolean;
-        fallbackReason?: "missing-env" | "connection-error" | "network-access" | null;
+        dbStatus?: MongoStatus;
         data?: Place[];
         places?: Place[];
         error?: string;
@@ -61,15 +59,16 @@ export function AdminPlacesClient() {
       }
 
       setPlaces(data.data ?? data.places ?? []);
-      setSource(data.source ?? "mock");
-      setMongoConfigured(Boolean(data.mongoConfigured));
-      setFallbackReason(data.fallbackReason ?? null);
+      setSource(data.source ?? "fallback");
+      setDbStatus(data.dbStatus ?? null);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Unable to load places.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  const canWrite = Boolean(dbStatus?.connected);
 
   useEffect(() => {
     loadPlaces();
@@ -144,13 +143,13 @@ export function AdminPlacesClient() {
 
   return (
     <div className="grid gap-4">
-      {source === "mock" ? (
+      {source === "fallback" || dbStatus?.connected === false ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          {mongoConfigured && fallbackReason === "connection-error"
-            ? "MongoDB is configured, but the server could not connect. Showing mock data until the database connection recovers."
-            : mongoConfigured && fallbackReason === "network-access"
-              ? "MongoDB is configured, but MongoDB Atlas is rejecting this machine/network. Add your current IP address in Atlas Network Access, then refresh."
-            : "MongoDB is not configured. Public browsing uses mock data, but admin create/edit/delete needs `MONGODB_URI`."}
+          <p className="font-bold">Database writes are disabled.</p>
+          <p className="mt-1 leading-6">
+            {dbStatus?.message ??
+              "MongoDB is unavailable. Add MONGODB_URI and confirm Atlas Network Access before editing places."}
+          </p>
         </div>
       ) : null}
       {error ? (
@@ -181,7 +180,8 @@ export function AdminPlacesClient() {
         <button
           type="button"
           onClick={() => setIsBulkOpen(true)}
-          className="min-h-11 rounded-full bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-teal-700"
+          disabled={!canWrite}
+          className="min-h-11 rounded-full bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-300"
         >
           Bulk Import
         </button>
@@ -220,7 +220,8 @@ export function AdminPlacesClient() {
                 <button
                   type="button"
                   onClick={() => deletePlace(place)}
-                  className="rounded-full border border-red-200 px-3 py-2 text-xs font-bold text-red-700 transition hover:bg-red-50"
+                  disabled={!canWrite}
+                  className="rounded-full border border-red-200 px-3 py-2 text-xs font-bold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400"
                 >
                   Delete
                 </button>

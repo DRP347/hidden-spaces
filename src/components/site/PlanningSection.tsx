@@ -21,9 +21,9 @@ const plans = [
   },
 ];
 
-export function GoldenHourGuide() {
+export function PlanningSection() {
   return (
-    <section id="plan" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-12 lg:py-16" aria-labelledby="plan-title">
+    <section id="plan" className="section-shell mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-12 lg:py-16" aria-labelledby="plan-title">
       <div className="rounded-[30px] border border-white/70 bg-[#FFFDF8]/78 p-5 text-[#151515] shadow-[0_24px_80px_rgba(75,55,29,0.12),inset_0_1px_0_rgba(255,255,255,0.84)] backdrop-blur-xl sm:rounded-[36px] sm:p-8">
         <div className="grid gap-7 lg:grid-cols-[0.85fr_1.15fr]">
           <div>

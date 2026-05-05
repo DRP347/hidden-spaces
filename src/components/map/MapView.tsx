@@ -103,7 +103,7 @@ export function MapView({
 
       if (
         target.closest(
-          ".hidden-space-marker, .leaflet-marker-icon, .leaflet-control",
+          ".map-pin, .leaflet-marker-icon, .leaflet-control",
         )
       ) {
         return;
@@ -124,7 +124,7 @@ export function MapView({
 
       if (
         target.closest(
-          ".hidden-space-marker, .leaflet-marker-icon, .leaflet-control",
+          ".map-pin, .leaflet-marker-icon, .leaflet-control",
         )
       ) {
         return;
@@ -275,7 +275,7 @@ export function MapView({
 
       if (
         target.closest(
-          ".hidden-space-marker, .leaflet-marker-icon, .leaflet-control",
+          ".map-pin, .leaflet-marker-icon, .leaflet-control",
         )
       ) {
         return;
@@ -396,16 +396,16 @@ function getMarkerIcon(place: Place, isSelected: boolean) {
   const icon = L.divIcon({
     className: "",
     html: `
-      <div class="hidden-space-marker ${selectedClass}" style="--marker-accent:${accent}">
-        <span class="hidden-space-marker__halo"></span>
-        <span class="hidden-space-marker__shell">
-          <span class="hidden-space-marker__dot"></span>
+      <div class="map-pin ${selectedClass}" style="--marker-accent:${accent}">
+        <span class="map-pin__halo"></span>
+        <span class="map-pin__shell">
+          <span class="map-pin__dot"></span>
         </span>
-        <span class="hidden-space-marker__label">${escapeHtml(place.name)}</span>
+        <span class="map-pin__label">${escapeHtml(place.name)}</span>
       </div>
     `,
-    iconSize: [44, 44],
-    iconAnchor: [22, 22],
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
     popupAnchor: [0, -20],
   });
 

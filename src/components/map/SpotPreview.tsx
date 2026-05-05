@@ -7,7 +7,7 @@ import { getSpotAccent } from "@/lib/map";
 import { getGoogleMapsUrl } from "@/lib/site";
 import type { Spot } from "@/types/spot";
 
-export function MapSpotPreview({
+export function SpotPreview({
   spot,
   onClose,
   onViewDetails,
@@ -19,9 +19,9 @@ export function MapSpotPreview({
   if (!spot) return null;
 
   return (
-    <aside className="pointer-events-auto absolute inset-x-3 bottom-3 z-30 mx-auto max-h-[54svh] max-w-xl overflow-hidden rounded-[28px] border border-white/72 bg-[#FFFDF8]/82 shadow-[0_28px_96px_rgba(22,32,42,0.2)] backdrop-blur-2xl sm:inset-x-auto sm:bottom-8 sm:right-6 sm:max-h-none sm:w-[460px] lg:right-8">
+    <aside className="glass-panel pointer-events-auto absolute inset-x-3 bottom-3 z-30 mx-auto max-h-[54svh] max-w-xl overflow-hidden rounded-[28px] sm:inset-x-auto sm:bottom-8 sm:right-6 sm:max-h-none sm:w-[460px] lg:right-8">
       <div className="grid max-h-[54svh] grid-cols-[96px_1fr] gap-0 overflow-y-auto overscroll-contain sm:max-h-none sm:grid-cols-[142px_1fr] sm:overflow-visible">
-        <SpotVisual spot={spot} className="min-h-full" />
+        <SpotVisual spot={spot} className="min-h-[180px] sm:min-h-[260px]" />
         <div className="p-3.5 sm:p-5">
           <div className="flex items-start justify-between gap-2 sm:gap-4">
             <div className="min-w-0">
@@ -76,7 +76,7 @@ export function MapSpotPreview({
             <button
               type="button"
               onClick={() => onViewDetails(spot)}
-              className="min-h-11 rounded-full bg-[#151515] px-3 py-2 text-sm font-bold text-[#FFFDF8] transition hover:bg-[#1E4E8C] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D99A3D] active:scale-[0.98] sm:px-4"
+              className="primary-button px-3 sm:px-4"
             >
               <span className="sm:hidden">Details</span>
               <span className="hidden sm:inline">View field note</span>
@@ -85,7 +85,7 @@ export function MapSpotPreview({
               href={getGoogleMapsUrl(spot)}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-white/72 px-3 py-2 text-sm font-bold text-[#25313D] ring-1 ring-white/80 transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] active:scale-[0.98] sm:gap-2 sm:px-4"
+              className="secondary-button px-3 sm:px-4"
             >
               <span className="sm:hidden">Maps</span>
               <span className="hidden sm:inline">Open in Maps</span>

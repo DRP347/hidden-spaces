@@ -10,7 +10,7 @@ type LeafletContainer = HTMLDivElement & {
   _leaflet_id?: number;
 };
 
-export function SpotLeafletMap({
+export function HeroMap({
   spots,
   selectedSpot,
   onSelect,
@@ -54,7 +54,7 @@ export function SpotLeafletMap({
       zoom: 13,
       zoomControl: false,
       attributionControl: true,
-      scrollWheelZoom: true,
+      scrollWheelZoom: false,
     });
 
     L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
@@ -99,8 +99,8 @@ export function SpotLeafletMap({
         keyboard: true,
         icon: L.divIcon({
           className: "",
-          iconSize: [44, 44],
-          iconAnchor: [22, 22],
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
           html: createMarkerHtml(spot, accent, isSelected),
         }),
       });
@@ -112,7 +112,7 @@ export function SpotLeafletMap({
 
       marker.on("add", () => {
         const element = marker.getElement();
-        const button = element?.querySelector<HTMLButtonElement>(".hidden-space-marker__button");
+        const button = element?.querySelector<HTMLButtonElement>(".map-pin__button");
         button?.addEventListener("keydown", (event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
@@ -151,12 +151,12 @@ function createMarkerHtml(spot: Spot, accent: string, isSelected: boolean) {
   const label = escapeHtml(spot.name);
 
   return `
-    <button class="hidden-space-marker hidden-space-marker__button${selectedClass}${featuredClass}" type="button" aria-label="Select ${label}" style="--marker-accent:${accent}">
-      <span class="hidden-space-marker__halo"></span>
-      <span class="hidden-space-marker__shell">
-        <span class="hidden-space-marker__dot"></span>
+    <button class="map-pin map-pin__button${selectedClass}${featuredClass}" type="button" aria-label="Select ${label}" style="--marker-accent:${accent}">
+      <span class="map-pin__halo"></span>
+      <span class="map-pin__shell">
+        <span class="map-pin__dot"></span>
       </span>
-      <span class="hidden-space-marker__label">${label}</span>
+      <span class="map-pin__label">${label}</span>
     </button>
   `;
 }

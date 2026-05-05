@@ -50,6 +50,27 @@ export function placeToSpot(place: Place, index = 0): Spot {
   };
 }
 
+export function normalizeSpot(spot: Spot): Spot {
+  const category = toSpotCategory(spot.category);
+  const tags = spot.tags.length ? spot.tags : [category.toLowerCase()];
+
+  return {
+    ...spot,
+    category,
+    tags,
+    area: spot.area || "Daman",
+    description: spot.description || "A quiet field note from Daman.",
+    longDescription: spot.longDescription || spot.description,
+    bestTime: spot.bestTime || "A quieter hour of the day",
+    mood: spot.mood || "quiet, local, easy",
+    gradientFallback: spot.gradientFallback || categoryFallbacks[category],
+    gradient: spot.gradient || categoryFallbacks[category],
+    travelTip:
+      spot.travelTip || `Best visited around ${(spot.bestTime || "a quieter hour").toLowerCase()}.`,
+    nearbyHint: spot.nearbyHint || "Use the map pin to plan the closest approach.",
+  };
+}
+
 function toSpotCategory(category: PlaceCategory): SpotCategory {
   return category;
 }

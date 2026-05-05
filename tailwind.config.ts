@@ -23,7 +23,7 @@ const config: Config = {
       },
       fontFamily: {
         display: ["Cormorant Garamond", "Playfair Display", "Georgia", "serif"],
-        sans: ["Geist", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Outfit", "Geist", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
         glass:
