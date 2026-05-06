@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   ArrowDown,
-  ChevronDown,
   Compass,
   Hand,
   Search,
@@ -105,14 +104,6 @@ export function MapHero({
           />
         </div>
       </div>
-
-      <a
-        href="#spots"
-        className="glass-button pointer-events-auto absolute bottom-5 right-5 z-20 hidden items-center gap-2 px-4 py-3 text-sm font-bold text-[#25313D] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] lg:inline-flex"
-      >
-        Field notes below
-        <ChevronDown className="h-4 w-4 animate-bounce" />
-      </a>
 
       <SpotPreview
         spot={selectedSpot}
