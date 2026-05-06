@@ -3,9 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
-  ArrowDown,
   Compass,
-  Hand,
   Search,
   Shuffle,
 } from "lucide-react";
@@ -117,7 +115,7 @@ export function MapHero({
 function HeroNav() {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 z-20 px-3 pt-3 sm:px-5 sm:pt-5">
-      <nav className="hero-nav glass-panel pointer-events-auto mx-auto flex max-w-7xl items-center justify-between gap-2 rounded-[26px] px-3 py-2 sm:rounded-full sm:px-4" aria-label="Main navigation">
+      <nav className="hero-nav glass-panel pointer-events-auto mx-auto flex w-fit max-w-[calc(100vw-1.5rem)] items-center justify-between gap-2 rounded-[26px] px-3 py-2 sm:w-full sm:max-w-7xl sm:rounded-full sm:px-4" aria-label="Main navigation">
         <Link href="/" className="group inline-flex min-h-11 min-w-0 items-center gap-2 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] sm:gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#151515] font-display text-2xl font-semibold leading-none text-[#FFFDF8] shadow-[0_10px_28px_rgba(21,21,21,0.18)] ring-1 ring-white/20 sm:h-12 sm:w-12 sm:text-3xl">H</span>
           <span className="min-w-0">
@@ -185,12 +183,12 @@ function HeroDock({
   onSurprise: () => void;
 }) {
   return (
-    <aside className="hero-dock glass-dock pointer-events-auto w-full min-w-0 max-w-[360px] overflow-hidden rounded-[24px] px-4 py-4 sm:max-w-[min(100%,560px)] sm:rounded-[28px] sm:px-5 sm:py-5 lg:w-[390px] lg:max-w-[32vw] lg:rounded-[28px] lg:px-6 lg:py-6 xl:w-[410px]" aria-label="Hidden Spaces Daman discovery controls">
+    <aside className="hero-dock glass-dock pointer-events-auto w-full min-w-0 max-w-[360px] overflow-hidden rounded-[24px] px-4 py-4 sm:max-w-[min(100%,560px)] sm:rounded-[28px] sm:px-5 sm:py-5 lg:w-[360px] lg:max-w-[30vw] lg:rounded-[28px] lg:px-5 lg:py-5 xl:w-[380px]" aria-label="Hidden Spaces Daman discovery controls">
       <p className="glass-pill mb-3 inline-flex items-center gap-2 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.13em] text-[#9E3F2F] sm:text-xs">
         <Compass className="h-3.5 w-3.5" />
         Live field map
       </p>
-      <h1 id="hero-title" className="max-w-full font-display text-[clamp(2.25rem,9vw,3.15rem)] font-semibold leading-[1.02] tracking-[-0.045em] text-[#151515] sm:text-[clamp(3rem,6.4vw,4rem)] lg:text-[clamp(3.25rem,4.6vw,5.25rem)] lg:leading-[0.98]">
+      <h1 id="hero-title" className="max-w-full font-display text-[clamp(2rem,7.8vw,2.7rem)] font-semibold leading-[1.03] tracking-[-0.04em] text-[#151515] sm:text-[clamp(2.65rem,5.8vw,3.55rem)] lg:text-[clamp(2.7rem,3.55vw,4rem)] lg:leading-[1]">
         <span className="block whitespace-nowrap">Find the quiet</span>
         <span className="block whitespace-nowrap">side of Daman.</span>
       </h1>
@@ -204,15 +202,6 @@ function HeroDock({
         categories={categories}
         onCategoryChange={onCategoryChange}
       />
-
-      <a
-        href="#spots"
-        className="mt-3 inline-flex min-h-9 items-center gap-2 text-xs font-semibold text-[#6b5b48] transition hover:text-[#151515] focus-visible:rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C]"
-      >
-        <Hand className="h-3.5 w-3.5" />
-        Drag map · scroll for notes
-        <ArrowDown className="h-3.5 w-3.5" />
-      </a>
     </aside>
   );
 }

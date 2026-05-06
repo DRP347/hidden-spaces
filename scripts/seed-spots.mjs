@@ -1,123 +1,152 @@
+import fs from "node:fs";
+import path from "node:path";
 import mongoose, { Schema } from "mongoose";
 
-const DEFAULT_IMAGE_URL = "/images/spots/fallback-field-note.jpg";
+const DEFAULT_IMAGE_URL =
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&h=900&q=82";
 
-const seedSpots = [
+const legacyMockSpots = [
   {
-    name: "Sutta break",
-    slug: "sutta-break",
-    category: "Peaceful",
-    coordinates: { lat: 20.412363, lng: 72.831551 },
-    description: "Want to have a break; come here smoke one nd ghar jao bc.",
-    imageSrc:
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777720517/hidden-spaces-daman/places/trog9oaxunzuj51oeiwd.png",
-    publicId: "hidden-spaces-daman/places/trog9oaxunzuj51oeiwd",
-    gallery: [
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777720517/hidden-spaces-daman/places/trog9oaxunzuj51oeiwd.png",
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777720513/hidden-spaces-daman/places/qzmamtgrxmxijwyewobe.png",
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777720533/hidden-spaces-daman/places/ovimprg6bmye7l1tqqyc.jpg",
-    ],
-    tags: ["Sutta", "Dhaka"],
-    bestTime: "Evening",
+    name: "Nani Daman Jetty Walk",
+    slug: "nani-daman-jetty-walk",
+    category: "Sunset",
+    coordinates: { lat: 20.4171, lng: 72.8328 },
+    description: "A quiet river-mouth walk where fishing boats cut through gold light.",
+    imageSrc: "/images/spots/nani-daman-jetty-walk.jpg",
+    tags: ["golden hour", "river mouth", "slow walk"],
+    bestTime: "5:35 PM to 6:45 PM",
+    crowdLevel: "Gentle",
+    safety: "Comfortable",
+    parking: true,
+  },
+  {
+    name: "Moti Daman Fort Walls",
+    slug: "moti-daman-fort-walls",
+    category: "Heritage",
+    coordinates: { lat: 20.4142, lng: 72.8279 },
+    description: "Portuguese stone walls, sea breeze, and a slower view of old Daman.",
+    imageSrc: "/images/spots/moti-daman-fort-walls.jpg",
+    tags: ["fort walls", "Portuguese Daman", "sea view"],
+    bestTime: "Early morning or late afternoon",
+    crowdLevel: "Gentle",
+    safety: "Comfortable",
+    parking: true,
+  },
+  {
+    name: "Jampore Beach Quiet Stretch",
+    slug: "jampore-beach-quiet-stretch",
+    category: "Beaches",
+    coordinates: { lat: 20.3681, lng: 72.8278 },
+    description: "A wider, calmer side of the beach for morning air and open sand.",
+    imageSrc: "/images/spots/jampore-beach-quiet-stretch.jpg",
+    tags: ["morning", "open sand", "low crowd"],
+    bestTime: "6:15 AM to 8:00 AM",
+    crowdLevel: "Quiet",
+    safety: "Comfortable",
+    parking: false,
+  },
+  {
+    name: "Devka Sea View Corners",
+    slug: "devka-sea-view-corners",
+    category: "Beaches",
+    coordinates: { lat: 20.4425, lng: 72.8344 },
+    description: "Small sea-facing pockets where the sound of water carries the scene.",
+    imageSrc: "/images/spots/devka-sea-view-corners.jpg",
+    tags: ["sea view", "rocks", "evening"],
+    bestTime: "After 5:00 PM",
+    crowdLevel: "Moderate",
+    safety: "Stay aware",
+    parking: false,
+  },
+  {
+    name: "Portuguese Lane near Moti Daman",
+    slug: "portuguese-lane-near-moti-daman",
+    category: "Hidden Lanes",
+    coordinates: { lat: 20.4157, lng: 72.8291 },
+    description: "Pastel lanes, aged walls, quiet corners, and old-world silence.",
+    imageSrc: "",
+    tags: ["old lanes", "photo walk", "architecture"],
+    bestTime: "9:00 AM or 4:30 PM",
+    crowdLevel: "Quiet",
+    safety: "Stay aware",
+    parking: false,
+  },
+  {
+    name: "Local Food Corner near Jetty",
+    slug: "local-food-corner-near-jetty",
+    category: "Food",
+    coordinates: { lat: 20.4163, lng: 72.8334 },
+    description: "A casual local pocket for quick bites after a river-side walk.",
+    imageSrc: "/images/spots/local-food-corner-jetty.jpg",
+    tags: ["snacks", "street food", "after sunset"],
+    bestTime: "Evening snack hour",
     crowdLevel: "Moderate",
     safety: "Stay aware",
     parking: true,
   },
   {
-    name: "Dominican Monastery",
-    slug: "dominican-monastery",
-    category: "Heritage",
-    coordinates: { lat: 20.40751, lng: 72.830913 },
-    description:
-      "A quiet corner near the lighthouse. Ideal for peaceful evenings, private conversations.",
-    imageSrc:
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777718473/hidden-spaces-daman/places/xv4gvfs7h0kpqvio0qrv.jpg",
-    publicId: "hidden-spaces-daman/places/xv4gvfs7h0kpqvio0qrv",
-    gallery: [
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777718473/hidden-spaces-daman/places/xv4gvfs7h0kpqvio0qrv.jpg",
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777718474/hidden-spaces-daman/places/qbaimyt23ifzq2mf2ljx.jpg",
-    ],
-    tags: ["peaceful", "private", "local"],
-    bestTime: "Golden Hour (5:30 PM - 6:45 PM)",
-    crowdLevel: "Quiet",
-    safety: "Go before dark",
+    name: "Sunset Point near Nani Daman",
+    slug: "sunset-point-near-nani-daman",
+    category: "Sunset",
+    coordinates: { lat: 20.4212, lng: 72.834 },
+    description: "An easy golden-hour stop when you want sky, water, and little fuss.",
+    imageSrc: "/images/spots/sunset-point-nani-daman.jpg",
+    tags: ["sunset", "easy access", "waterfront"],
+    bestTime: "Golden hour",
+    crowdLevel: "Gentle",
+    safety: "Comfortable",
     parking: true,
   },
   {
-    name: "Rosario Chapel Bench Spot",
-    slug: "rosario-chapel-bench",
-    category: "Peaceful",
-    coordinates: { lat: 20.406083, lng: 72.834056 },
-    description:
-      "A quiet bench near the chapel. A slow, peaceful spot to sit and disconnect from the noise.",
-    imageSrc:
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777719254/hidden-spaces-daman/places/wsm7mvndqwyezz8yx7wb.png",
-    publicId: "hidden-spaces-daman/places/wsm7mvndqwyezz8yx7wb",
-    gallery: [
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777719254/hidden-spaces-daman/places/wsm7mvndqwyezz8yx7wb.png",
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777719256/hidden-spaces-daman/places/uk9r0kyel9waoaq7tl2o.png",
-    ],
-    tags: ["quiet", "bench", "peaceful", "local"],
-    bestTime: "Evening",
+    name: "Peaceful Café Stop",
+    slug: "peaceful-cafe-stop",
+    category: "Cafés",
+    coordinates: { lat: 20.4172, lng: 72.8295 },
+    description: "A calm coffee pause between fort walks and old-lane wandering.",
+    imageSrc: "/images/spots/peaceful-cafe-stop.jpg",
+    tags: ["coffee", "quiet stop", "between walks"],
+    bestTime: "Late afternoon",
+    crowdLevel: "Quiet",
+    safety: "Comfortable",
+    parking: true,
+  },
+  {
+    name: "Old Chapel Walk",
+    slug: "old-chapel-walk",
+    category: "Heritage",
+    coordinates: { lat: 20.416, lng: 72.8287 },
+    description: "A quiet chapel-side walk with muted colors and soft old-town detail.",
+    imageSrc: "/images/spots/old-chapel-walk.jpg",
+    tags: ["chapel", "heritage", "quiet street"],
+    bestTime: "Morning after 8:00 AM",
     crowdLevel: "Quiet",
     safety: "Comfortable",
     parking: false,
   },
   {
-    name: "Secret Sunrise Point",
-    slug: "secret-sunrise-daman",
-    category: "Sunset",
-    coordinates: { lat: 20.367846, lng: 72.82418 },
-    description: "One of the best sunrise spots in Daman with open horizon and clean light.",
-    imageSrc:
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777720814/hidden-spaces-daman/places/cbf4ucidovdliwgkg5vs.png",
-    publicId: "hidden-spaces-daman/places/cbf4ucidovdliwgkg5vs",
-    gallery: [
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777720814/hidden-spaces-daman/places/cbf4ucidovdliwgkg5vs.png",
-    ],
-    tags: ["sunrise", "open sky", "photography"],
-    bestTime: "Early Morning",
+    name: "Hidden Morning Beach Patch",
+    slug: "hidden-morning-beach-patch",
+    category: "Photo Spots",
+    coordinates: { lat: 20.3822, lng: 72.8234 },
+    description: "Open sky, textured foregrounds, and soft light for quiet portraits.",
+    imageSrc: "/images/spots/hidden-morning-beach-patch.jpg",
+    tags: ["sunrise", "portraits", "open sky"],
+    bestTime: "Sunrise to 7:30 AM",
     crowdLevel: "Quiet",
     safety: "Comfortable",
     parking: false,
   },
   {
-    name: "Naav Wada Sunrise Spot",
-    slug: "naav-wada-sunrise",
-    category: "Sunset",
-    coordinates: { lat: 20.412672, lng: 72.836214 },
-    description:
-      "Early morning fishing scene with boats, birds, and soft sunrise light. A raw and authentic local experience.",
-    imageSrc:
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777718798/hidden-spaces-daman/places/kwss2xshriid6ujnyxoh.png",
-    publicId: "hidden-spaces-daman/places/kwss2xshriid6ujnyxoh",
-    gallery: [
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777718798/hidden-spaces-daman/places/kwss2xshriid6ujnyxoh.png",
-    ],
-    tags: ["sunrise", "boats", "birds", "photography"],
-    bestTime: "Early Morning (5:30 AM - 7:00 AM)",
-    crowdLevel: "Quiet",
+    name: "Daman Lighthouse View",
+    slug: "daman-lighthouse-view",
+    category: "Photo Spots",
+    coordinates: { lat: 20.4148, lng: 72.8264 },
+    description: "A clean coastal frame where the lighthouse anchors the old fort edge.",
+    imageSrc: "/images/spots/daman-lighthouse-view.jpg",
+    tags: ["lighthouse", "heritage", "photo walk"],
+    bestTime: "Early morning or golden hour",
+    crowdLevel: "Gentle",
     safety: "Comfortable",
-    parking: false,
-  },
-  {
-    name: "Hidden Chill Spot (Moti Daman)",
-    slug: "hidden-chill-moti-daman",
-    category: "Hidden Lanes",
-    coordinates: { lat: 20.409964, lng: 72.835088 },
-    description:
-      "An underrated local hangout where you can relax with friends away from crowded areas.",
-    imageSrc:
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777717694/hidden-spaces-daman/places/obcyqpljio6waxbd04ux.png",
-    publicId: "hidden-spaces-daman/places/obcyqpljio6waxbd04ux",
-    gallery: [
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777717694/hidden-spaces-daman/places/obcyqpljio6waxbd04ux.png",
-      "https://res.cloudinary.com/dmpm2chy6/image/upload/v1777717697/hidden-spaces-daman/places/dxfw9opket02epo6m60d.png",
-    ],
-    tags: ["hidden", "friends", "chill"],
-    bestTime: "Evening",
-    crowdLevel: "Quiet",
-    safety: "Stay aware",
     parking: false,
   },
 ];
@@ -184,6 +213,53 @@ const PlaceSchema = new Schema(
 const PlaceModel =
   mongoose.models.Place || mongoose.model("Place", PlaceSchema, "places");
 
+loadLocalEnvFiles();
+
+function loadLocalEnvFiles() {
+  for (const fileName of [".env.local", ".env"]) {
+    const filePath = path.join(process.cwd(), fileName);
+
+    if (!fs.existsSync(filePath)) {
+      continue;
+    }
+
+    const contents = fs.readFileSync(filePath, "utf8");
+
+    for (const line of contents.split(/\r?\n/)) {
+      const trimmed = line.trim();
+
+      if (!trimmed || trimmed.startsWith("#")) {
+        continue;
+      }
+
+      const equalsIndex = trimmed.indexOf("=");
+
+      if (equalsIndex < 1) {
+        continue;
+      }
+
+      const key = trimmed.slice(0, equalsIndex).trim();
+
+      if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key) || process.env[key]) {
+        continue;
+      }
+
+      process.env[key] = unquoteEnvValue(trimmed.slice(equalsIndex + 1).trim());
+    }
+  }
+}
+
+function unquoteEnvValue(value) {
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    return value.slice(1, -1);
+  }
+
+  return value;
+}
+
 function getMongoUri() {
   return (
     process.env.MONGODB_URI ||
@@ -195,6 +271,7 @@ function getMongoUri() {
 
 function toPlacePayload(spot) {
   const coverUrl = spot.imageSrc || DEFAULT_IMAGE_URL;
+  const galleryUrls = spot.gallery?.length ? spot.gallery : [coverUrl];
 
   return {
     name: spot.name,
@@ -205,14 +282,11 @@ function toPlacePayload(spot) {
     images: {
       cover: {
         url: coverUrl,
-        publicId: spot.publicId || `hidden-spaces-daman/seed/${spot.slug}`,
+        publicId: `hidden-spaces-daman/legacy/${spot.slug}/cover`,
       },
-      gallery: (spot.gallery || []).map((url, index) => ({
+      gallery: galleryUrls.map((url, index) => ({
         url,
-        publicId:
-          index === 0 && spot.publicId
-            ? spot.publicId
-            : `hidden-spaces-daman/seed/${spot.slug}-${index + 1}`,
+        publicId: `hidden-spaces-daman/legacy/${spot.slug}/gallery-${index + 1}`,
       })),
     },
     tags: spot.tags,
@@ -228,7 +302,7 @@ async function main() {
   const uri = getMongoUri();
 
   if (!uri) {
-    console.error("Missing MONGODB_URI. Add it to your environment before seeding.");
+    console.error("Missing MONGODB_URI. Add it to .env.local or your shell environment before seeding.");
     process.exit(1);
   }
 
@@ -246,7 +320,7 @@ async function main() {
   let inserted = 0;
   let updated = 0;
 
-  for (const spot of seedSpots) {
+  for (const spot of legacyMockSpots) {
     const result = await PlaceModel.updateOne(
       { slug: spot.slug },
       { $set: toPlacePayload(spot) },
@@ -260,7 +334,9 @@ async function main() {
     }
   }
 
-  console.log(`Seed complete. Inserted ${inserted}, updated ${updated}.`);
+  console.log(
+    `Seed complete. Inserted ${inserted}, updated ${updated}, total ${legacyMockSpots.length}.`,
+  );
   await mongoose.disconnect();
 }
 
