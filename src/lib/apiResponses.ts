@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { MongoStatus } from "@/lib/mongodb";
 
 export const noStoreHeaders = {
-  "Cache-Control": "no-store, max-age=0",
+  "Cache-Control": "no-store, no-cache, must-revalidate",
 };
 
 export function databaseUnavailableResponse(dbStatus: MongoStatus) {

@@ -1,9 +1,8 @@
-import { damanSpots } from "@/data/spots";
+import { fallbackSpots } from "@/data/spots";
 import {
   createMongoStatus,
   getMongoStatus,
   resetDatabaseConnection,
-  type DataSource,
   type MongoStatus,
 } from "@/lib/mongodb";
 import { toPlace } from "@/lib/placeRepository";
@@ -17,9 +16,11 @@ export type PublicDataNotice = {
   message: string;
 };
 
+export type PublicSpotSource = "database" | "database-empty" | "fallback";
+
 export type PublicSpotsResult = {
   ok: boolean;
-  source: DataSource;
+  source: PublicSpotSource;
   count: number;
   dbStatus: MongoStatus;
   spots: Spot[];
@@ -48,18 +49,18 @@ export async function getPublicSpots(): Promise<PublicSpotsResult> {
   if (database.dbStatus.connected) {
     return {
       ok: true,
-      source: "fallback",
-      count: fallbackSpots.length,
+      source: "database-empty",
+      count: 0,
       dbStatus: {
         ...database.dbStatus,
-        source: "fallback",
+        source: "database",
       },
-      spots: fallbackSpots,
+      spots: [],
       notice: {
         tone: "info",
         title: "MongoDB is connected but has no public field notes.",
         message:
-          "Showing the curated fallback guide until public places are added in admin.",
+          "No fallback data is being mixed in. Add public places in admin to publish the map.",
       },
     };
   }
@@ -119,7 +120,7 @@ export async function getDatabaseSpots() {
 }
 
 export function getFallbackSpots() {
-  return damanSpots.map(normalizeSpot);
+  return fallbackSpots.map(normalizeSpot);
 }
 
 function getSafeErrorName(error: unknown) {

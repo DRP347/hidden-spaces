@@ -6,7 +6,7 @@
 
 :root {
   color-scheme: light;
-  background: #e7ddca;
+  background: #f6efe4;
 }
 
 * {
@@ -18,7 +18,7 @@ body {
   min-height: 100%;
   margin: 0;
   overflow-x: hidden;
-  background: #e7ddca;
+  background: #f6efe4;
   color: #16202a;
   scroll-behavior: smooth;
 }
@@ -66,30 +66,31 @@ textarea {
 .glass-panel,
 .glass-light {
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.68);
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.66), rgba(255, 253, 247, 0.46)),
-    rgba(255, 253, 247, 0.62);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(255, 253, 247, 0.46)),
+    rgba(255, 253, 247, 0.6);
   box-shadow:
-    0 24px 90px rgba(15, 23, 42, 0.12),
+    0 24px 90px rgba(15, 23, 42, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.82),
     inset 0 -1px 0 rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(22px) saturate(142%);
-  -webkit-backdrop-filter: blur(22px) saturate(142%);
+  backdrop-filter: blur(24px) saturate(142%);
+  -webkit-backdrop-filter: blur(24px) saturate(142%);
 }
 
 .glass-dock {
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.64);
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(255, 253, 247, 0.42)),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.66), rgba(255, 253, 247, 0.42)),
     rgba(255, 253, 247, 0.58);
   box-shadow:
-    0 24px 90px rgba(15, 23, 42, 0.12),
+    0 24px 90px rgba(15, 23, 42, 0.11),
+    0 2px 8px rgba(255, 255, 255, 0.46),
     inset 0 1px 0 rgba(255, 255, 255, 0.86),
     inset 0 -1px 0 rgba(255, 255, 255, 0.28);
-  backdrop-filter: blur(24px) saturate(148%);
-  -webkit-backdrop-filter: blur(24px) saturate(148%);
+  backdrop-filter: blur(26px) saturate(148%);
+  -webkit-backdrop-filter: blur(26px) saturate(148%);
 }
 
 .glass-pill,
@@ -102,7 +103,7 @@ textarea {
     linear-gradient(145deg, rgba(255, 255, 255, 0.58), rgba(255, 253, 247, 0.38)),
     rgba(255, 253, 247, 0.56);
   box-shadow:
-    0 14px 42px rgba(22, 32, 42, 0.1),
+    0 12px 32px rgba(22, 32, 42, 0.09),
     inset 0 1px 0 rgba(255, 255, 255, 0.76);
   backdrop-filter: blur(18px) saturate(136%);
   -webkit-backdrop-filter: blur(18px) saturate(136%);
@@ -164,7 +165,7 @@ textarea {
 .primary-button,
 .secondary-button {
   display: inline-flex;
-  min-height: 44px;
+  min-height: 46px;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -181,9 +182,9 @@ textarea {
 }
 
 .primary-button {
-  background: #151515;
+  background: linear-gradient(180deg, #23201c, #151515);
   color: #fffdf8;
-  box-shadow: 0 16px 34px rgba(21, 21, 21, 0.14);
+  box-shadow: 0 16px 34px rgba(21, 21, 21, 0.16);
 }
 
 .primary-button:hover {
@@ -192,15 +193,15 @@ textarea {
 }
 
 .secondary-button {
-  border: 1px solid rgba(36, 123, 117, 0.16);
-  background: #eff4ef;
-  color: #2e4f46;
+  border: 1px solid rgba(75, 55, 29, 0.12);
+  background: rgba(255, 253, 248, 0.74);
+  color: #473b2e;
 }
 
 .secondary-button:hover {
   transform: translateY(-1px);
-  border-color: rgba(36, 123, 117, 0.28);
-  background: #e3efe9;
+  border-color: rgba(75, 55, 29, 0.2);
+  background: rgba(255, 253, 248, 0.94);
 }
 
 .primary-button:focus-visible,
@@ -221,13 +222,13 @@ textarea {
   min-width: 0;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid rgba(226, 211, 190, 0.78);
-  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 24px;
   background:
-    linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(249, 246, 239, 0.94)),
+    linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(250, 245, 236, 0.94)),
     #fffdf8;
   box-shadow:
-    0 18px 54px rgba(75, 55, 29, 0.09),
+    0 18px 54px rgba(75, 55, 29, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.82);
   transition:
     transform 220ms ease,
@@ -236,7 +237,7 @@ textarea {
 }
 
 .spot-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   border-color: color-mix(in srgb, var(--spot-accent) 32%, rgba(226, 211, 190, 0.78));
   box-shadow:
     0 28px 82px rgba(75, 55, 29, 0.14),
@@ -245,9 +246,10 @@ textarea {
 
 .spot-card-image {
   position: relative;
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
-  border-bottom: 1px solid rgba(226, 211, 190, 0.62);
+  border-bottom: 1px solid rgba(226, 211, 190, 0.42);
+  border-radius: 22px 22px 0 0;
   background: #dfe8e5;
 }
 
@@ -264,7 +266,7 @@ textarea {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1rem 1.05rem 1.1rem;
 }
 
 .spot-card-meta {
@@ -272,22 +274,23 @@ textarea {
   flex-wrap: wrap;
   gap: 0.5rem 0.875rem;
   margin-bottom: 0.875rem;
-  color: #5f6f66;
+  color: #6b5b48;
   font-size: 0.75rem;
   font-weight: 700;
 }
 
 @media (min-width: 640px) {
   .spot-card {
-    border-radius: 28px;
+    border-radius: 26px;
   }
 
   .spot-card-image {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 10;
+    border-radius: 24px 24px 0 0;
   }
 
   .spot-card-body {
-    padding: 1.25rem;
+    padding: 1.2rem 1.25rem 1.25rem;
   }
 }
 
@@ -323,20 +326,21 @@ textarea {
   min-height: 100dvh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 13% 10%, rgba(255, 253, 247, 0.46), transparent 28%),
-    radial-gradient(circle at 87% 88%, rgba(111, 166, 161, 0.16), transparent 32%),
-    #e7ddca;
+    radial-gradient(circle at 13% 10%, rgba(255, 253, 247, 0.56), transparent 28%),
+    radial-gradient(circle at 87% 88%, rgba(111, 166, 161, 0.14), transparent 32%),
+    #f6efe4;
 }
 
 .leaflet-container {
   height: 100%;
   width: 100%;
-  background: #e7ddca;
+  background: #f6efe4;
   font-family: Outfit, Geist, ui-sans-serif, system-ui, sans-serif;
 }
 
 .leaflet-tile-pane {
-  filter: saturate(0.85) contrast(0.95) brightness(0.95);
+  filter: saturate(0.68) contrast(0.88) brightness(1.08) sepia(0.05);
+  opacity: 0.9;
 }
 
 .leaflet-control-attribution {
@@ -354,8 +358,8 @@ textarea {
 .map-pin {
   position: relative;
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   place-items: center;
   padding: 0;
   border: 0;
@@ -367,8 +371,8 @@ textarea {
 
 .map-pin__halo {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 999px;
   background: radial-gradient(
     circle,
@@ -385,10 +389,10 @@ textarea {
 .map-pin__shell {
   position: absolute;
   display: grid;
-  width: 25px;
-  height: 25px;
+  width: 19px;
+  height: 19px;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--marker-accent) 46%, transparent);
+  border: 2px solid color-mix(in srgb, var(--marker-accent) 58%, transparent);
   border-radius: 999px;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 253, 247, 0.72)),
@@ -405,8 +409,8 @@ textarea {
 }
 
 .map-pin__dot {
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
   border-radius: 999px;
   background: var(--marker-accent);
   box-shadow:
@@ -417,16 +421,16 @@ textarea {
 .map-pin__label {
   position: absolute;
   left: 50%;
-  bottom: 36px;
+  bottom: 40px;
   max-width: 210px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 999px;
   background: rgba(255, 253, 247, 0.76);
   box-shadow: 0 12px 32px rgba(22, 32, 42, 0.12);
   color: #16202a;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   line-height: 1;
   opacity: 0;
   pointer-events: none;
@@ -447,7 +451,18 @@ textarea {
 .map-pin:hover .map-pin__shell,
 .map-pin.is-selected .map-pin__shell {
   border-color: color-mix(in srgb, var(--marker-accent) 72%, transparent);
-  transform: translateY(-3px) scale(1.06);
+  transform: translateY(-2px) scale(1.12);
+}
+
+.map-pin.is-selected .map-pin__shell {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+.map-pin.is-selected .map-pin__dot {
+  width: 12px;
+  height: 12px;
 }
 
 .map-pin:hover .map-pin__label,
@@ -458,12 +473,49 @@ textarea {
 
 .map-pin.is-selected::after {
   position: absolute;
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   border: 1px solid color-mix(in srgb, var(--marker-accent) 34%, transparent);
   border-radius: 999px;
   content: "";
   animation: marker-pulse 1.8s ease-out infinite;
+}
+
+.hero-nav {
+  min-height: 68px;
+}
+
+.hero-nav-link {
+  position: relative;
+  display: inline-flex;
+  min-width: 5.5rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 1rem;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.hero-nav-link:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.hero-nav-link-active {
+  background: rgba(255, 253, 248, 0.72);
+  color: #151515;
+  box-shadow: inset 0 -2px 0 rgba(217, 154, 61, 0.92);
+}
+
+.spot-preview {
+  box-shadow:
+    0 28px 92px rgba(75, 55, 29, 0.16),
+    0 2px 8px rgba(255, 255, 255, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
 }
 
 .map-pin.is-featured .map-pin__halo {

@@ -1,9 +1,9 @@
-import { damanSpots } from "@/data/spots";
+import { fallbackSpots } from "@/data/spots";
 import type { Place, PlaceCategory, PlaceImage } from "@/types/placeTypes";
 import type { Spot, SpotCategory } from "@/types/spot";
 
 export function getFallbackPlaces(): Place[] {
-  return damanSpots.map(spotToFallbackPlace);
+  return fallbackSpots.map(spotToFallbackPlace);
 }
 
 function spotToFallbackPlace(spot: Spot): Place {

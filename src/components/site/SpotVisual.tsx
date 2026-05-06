@@ -6,10 +6,12 @@ export function SpotVisual({
   spot,
   priority = false,
   className = "",
+  showBadge = true,
 }: {
   spot: Spot;
   priority?: boolean;
   className?: string;
+  showBadge?: boolean;
 }) {
   const imageSrc = getSpotImageSrc(spot);
   const imageAlt = spot.imageAlt || spot.image?.alt || `${spot.name} in Daman`;
@@ -29,9 +31,11 @@ export function SpotVisual({
       />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(255,253,248,0.58),transparent_28%),linear-gradient(180deg,rgba(21,21,21,0.02),rgba(21,21,21,0.5))]" />
       <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(rgba(255,255,255,.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.35)_1px,transparent_1px)] [background-size:7px_7px]" />
-      <div className="absolute left-4 top-4 rounded-full bg-[#FFFDF8]/88 px-3 py-1 text-xs font-bold text-[#151515] shadow-sm ring-1 ring-white/60 backdrop-blur">
-        {spot.category}
-      </div>
+      {showBadge ? (
+        <div className="absolute left-4 top-4 rounded-full bg-[#FFFDF8]/88 px-3 py-1 text-xs font-bold text-[#151515] shadow-sm ring-1 ring-white/60 backdrop-blur">
+          {spot.category}
+        </div>
+      ) : null}
     </div>
   );
 }

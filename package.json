@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed:spots": "node scripts/seed-spots.mjs"
   },
   "dependencies": {
     "@types/leaflet": "^1.9.17",

@@ -1,6 +1,6 @@
 import type { Spot } from "@/types/spot";
 
-export const damanSpots: Spot[] = [
+export const fallbackSpots: Spot[] = [
   {
     id: "spot-001",
     name: "Nani Daman Jetty Walk",
@@ -256,4 +256,4 @@ export const damanSpots: Spot[] = [
   },
 ];
 
-export const featuredSpots = damanSpots.filter((spot) => spot.isFeatured);
+export const featuredSpots = fallbackSpots.filter((spot) => spot.isFeatured);

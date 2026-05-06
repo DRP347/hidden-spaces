@@ -56,7 +56,7 @@ const PlaceSchema = new Schema(
     parking: { type: Boolean, default: false },
     isPublished: { type: Boolean, default: true, index: true },
   },
-  { timestamps: true },
+  { timestamps: true, collection: "places" },
 );
 
 export type PlaceDocument = InferSchemaType<typeof PlaceSchema>;

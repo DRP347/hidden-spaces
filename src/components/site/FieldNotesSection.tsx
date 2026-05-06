@@ -1,6 +1,6 @@
 "use client";
 
-import { Shuffle } from "lucide-react";
+import { ArrowRight, Shuffle } from "lucide-react";
 
 import { CategoryRail, type ActiveCategory } from "@/components/site/CategoryRail";
 import { SpotCard } from "@/components/site/SpotCard";
@@ -28,25 +28,32 @@ export function FieldNotesSection({
   return (
     <section
       id="spots"
-      className="section-shell mx-auto max-w-6xl px-4 pb-10 pt-10 sm:px-6 md:pt-12 lg:pb-14 lg:pt-14"
+      className="section-shell mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6 md:pt-10 lg:pb-14 lg:pt-12"
       aria-labelledby="spots-title"
     >
       <div className="section-header mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#9E3F2F]">
-            Choose the kind of Daman you want today
+          <p className="inline-flex rounded-full bg-[#EFE5D5] px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#9E3F2F]">
+            Handpicked
           </p>
           <h2
             id="spots-title"
-            className="mt-2 max-w-2xl text-balance font-display text-[2.35rem] font-semibold leading-[0.98] tracking-[-0.045em] text-[#151515] sm:text-5xl"
+            className="mt-3 max-w-2xl text-balance font-display text-[2.2rem] font-semibold leading-[0.98] tracking-[-0.045em] text-[#151515] sm:text-5xl"
           >
-            Quiet places that make Daman feel personal.
+            Quiet places worth saving
           </h2>
+          <p className="mt-2 max-w-md text-sm leading-6 text-[#5d5143]">
+            Simple field notes for beaches, lanes, cafés, sunrise points, and slow walks.
+          </p>
         </div>
-        <p className="max-w-md text-sm leading-6 text-[#5d5143]">
-          Start with a mood, then let the route stay loose. Every card is
-          designed to be useful before you leave.
-        </p>
+        <button
+          type="button"
+          onClick={onReset}
+          className="secondary-button w-fit bg-transparent px-5 text-[#5d5143]"
+        >
+          View all spots
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
 
       <CategoryRail

@@ -9,24 +9,14 @@ import { PlanningSection } from "@/components/site/PlanningSection";
 import { RouteSection } from "@/components/site/RouteSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SpotDetailsModal } from "@/components/site/SpotDetailsModal";
-import type { DataSource, MongoStatus } from "@/lib/mongodb";
-import type { PublicDataNotice } from "@/lib/publicSpots";
 import { getCategoryCounts } from "@/lib/site";
 import type { Spot } from "@/types/spot";
 
-type HomeDataStatus = {
-  source: DataSource;
-  count: number;
-  dbStatus: MongoStatus;
-  notice: PublicDataNotice | null;
-};
-
 export function HomeExperience({
   spots,
-  dataStatus,
 }: {
   spots: Spot[];
-  dataStatus: HomeDataStatus;
+  dataStatus: unknown;
 }) {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All");
@@ -125,8 +115,6 @@ export function HomeExperience({
         onSurprise={surpriseMe}
       />
 
-      <DataSourceNotice dataStatus={dataStatus} />
-
       <FieldNotesSection
         spots={visibleSpots}
         query={query}
@@ -146,33 +134,5 @@ export function HomeExperience({
       <SiteFooter />
       <SpotDetailsModal spot={detailSpot} onClose={() => setDetailSpot(null)} />
     </main>
-  );
-}
-
-function DataSourceNotice({ dataStatus }: { dataStatus: HomeDataStatus }) {
-  if (!dataStatus.notice) {
-    return null;
-  }
-
-  const isWarning = dataStatus.notice.tone === "warning";
-
-  return (
-    <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
-      <div
-        className={`rounded-2xl border px-4 py-3 text-sm shadow-sm ${
-          isWarning
-            ? "border-amber-200 bg-amber-50 text-amber-900"
-            : "border-[#D7E7DF] bg-[#F2F8F4] text-[#2c5f53]"
-        }`}
-      >
-        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-bold">{dataStatus.notice.title}</p>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] opacity-75">
-            {dataStatus.source} · {dataStatus.count} field notes
-          </p>
-        </div>
-        <p className="mt-1 leading-6">{dataStatus.notice.message}</p>
-      </div>
-    </div>
   );
 }

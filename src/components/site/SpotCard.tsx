@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock3, ExternalLink, MapPin } from "lucide-react";
+import { ExternalLink, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
 
 import { SpotVisual } from "@/components/site/SpotVisual";
@@ -20,23 +20,25 @@ export function SpotCard({
   return (
     <article className="spot-card group" style={{ "--spot-accent": getSpotAccent(spot) } as CSSProperties}>
       <div className="spot-card-image">
-        <SpotVisual spot={spot} priority={priority} className="h-full" />
+        <SpotVisual spot={spot} priority={priority} className="h-full" showBadge={false} />
       </div>
       <div className="spot-card-body">
         <div className="spot-card-meta">
+          <span className="inline-flex items-center rounded-full bg-[#FFF7EA] px-2.5 py-1 text-[#9E3F2F] ring-1 ring-[#D99A3D]/20">
+            {spot.category}
+          </span>
           <span className="inline-flex items-center gap-1.5">
             <MapPin className="h-3.5 w-3.5 text-[var(--spot-accent)]" />
             {spot.area}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Clock3 className="h-3.5 w-3.5 text-[var(--spot-accent)]" />
-            {spot.bestTime}
           </span>
         </div>
         <h3 className="text-balance font-display text-[1.55rem] font-semibold leading-[1.04] tracking-[-0.035em] text-[#151515] sm:text-3xl">
           {spot.name}
         </h3>
         <p className="mt-3 text-[15px] leading-6 text-[#5f5345]">{spot.description}</p>
+        <p className="mt-3 rounded-2xl bg-[#F7EFE1] px-3 py-2 text-xs font-semibold leading-5 text-[#8a6845] ring-1 ring-[#EADDC8]/70">
+          Best time: {spot.bestTime}
+        </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {spot.tags.slice(0, 3).map((tag) => (
             <span key={tag} className="rounded-full bg-[#EFF4EF] px-3 py-1 text-xs font-semibold text-[#4d6d62]">

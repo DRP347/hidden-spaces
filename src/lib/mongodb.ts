@@ -11,6 +11,7 @@ export type MongoErrorType =
   | "AUTH"
   | "TIMEOUT"
   | "INVALID_URI"
+  | "MODEL_MISMATCH"
   | "UNKNOWN"
   | null;
 
@@ -160,6 +161,15 @@ export function classifyMongoError(error: unknown): Exclude<MongoErrorType, null
   }
 
   if (
+    normalized.includes("overwritemodelerror") ||
+    normalized.includes("schema hasn't been registered") ||
+    normalized.includes("model mismatch") ||
+    normalized.includes("missing schema")
+  ) {
+    return "MODEL_MISMATCH";
+  }
+
+  if (
     normalized.includes("authentication failed") ||
     normalized.includes("bad auth") ||
     normalized.includes("auth failed") ||
@@ -204,6 +214,8 @@ export function getSafeMongoMessage(errorType: MongoErrorType) {
       return "MongoDB connection timed out. Check Atlas Network Access, DNS, and Vercel environment configuration.";
     case "INVALID_URI":
       return "MongoDB URI is invalid. Use a mongodb+srv:// or mongodb:// connection string.";
+    case "MODEL_MISMATCH":
+      return "MongoDB is connected, but the app model or collection mapping does not match the stored place data.";
     case "UNKNOWN":
       return "MongoDB is unavailable. Check the database connection and deployment logs.";
     case null:

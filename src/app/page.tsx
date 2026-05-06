@@ -23,10 +23,7 @@ export default async function Home() {
           source: result.source,
           count: result.count,
           dbStatus: result.dbStatus,
-          notice:
-            result.notice && (process.env.NODE_ENV !== "production" || result.dbStatus.connected)
-              ? result.notice
-              : null,
+          notice: process.env.NODE_ENV !== "production" ? result.notice : null,
         }}
       />
     </>

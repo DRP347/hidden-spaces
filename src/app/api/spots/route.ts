@@ -11,7 +11,7 @@ export async function GET() {
 
   return NextResponse.json(
     {
-      ok: true,
+      ok: result.ok,
       source: result.source,
       count: result.count,
       dbStatus: result.dbStatus,

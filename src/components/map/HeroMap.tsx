@@ -99,8 +99,8 @@ export function HeroMap({
         keyboard: true,
         icon: L.divIcon({
           className: "",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
+          iconSize: [52, 52],
+          iconAnchor: [26, 26],
           html: createMarkerHtml(spot, accent, isSelected),
         }),
       });
