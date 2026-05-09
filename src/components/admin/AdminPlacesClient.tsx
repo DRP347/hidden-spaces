@@ -163,35 +163,38 @@ export function AdminPlacesClient() {
         </div>
       ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row sm:items-center">
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search places..."
-          className="min-h-11 flex-1 rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10"
+          className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10"
         />
-        <button
-          type="button"
-          onClick={loadPlaces}
-          className="min-h-11 rounded-full border border-slate-200 px-4 text-sm font-bold text-slate-700 transition hover:border-slate-300"
-        >
-          Refresh
-        </button>
-        <button
-          type="button"
-          onClick={() => setIsBulkOpen(true)}
-          disabled={!canWrite}
-          className="min-h-11 rounded-full bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-        >
-          Bulk Import
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={loadPlaces}
+            className="min-h-11 flex-1 rounded-full border border-slate-200 px-4 text-sm font-bold text-slate-700 transition hover:border-slate-300 sm:flex-none"
+          >
+            Refresh
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsBulkOpen(true)}
+            disabled={!canWrite}
+            className="min-h-11 flex-1 rounded-full bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-300 sm:flex-none"
+          >
+            Bulk Import
+          </button>
+        </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="grid grid-cols-[1fr_auto] gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-500 md:grid-cols-[1.4fr_0.8fr_0.6fr_auto]">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="min-w-[720px]">
+        <div className="grid grid-cols-[1.4fr_0.8fr_0.6fr_auto] gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
           <span>Place</span>
-          <span className="hidden md:block">Category</span>
-          <span className="hidden md:block">Visibility</span>
+          <span>Category</span>
+          <span>Visibility</span>
           <span>Actions</span>
         </div>
         {isLoading ? (
@@ -200,7 +203,7 @@ export function AdminPlacesClient() {
           filteredPlaces.map((place) => (
             <div
               key={place.id}
-              className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-slate-100 px-4 py-3 last:border-0 md:grid-cols-[1.4fr_0.8fr_0.6fr_auto]"
+              className="grid grid-cols-[1.4fr_0.8fr_0.6fr_auto] items-center gap-3 border-b border-slate-100 px-4 py-3 last:border-0"
             >
               <div className="min-w-0">
                 <p className="truncate text-sm font-bold text-slate-950">{place.name}</p>
@@ -208,8 +211,8 @@ export function AdminPlacesClient() {
                   {place.coordinates.lat.toFixed(5)}, {place.coordinates.lng.toFixed(5)} · {place.slug}
                 </p>
               </div>
-              <span className="hidden text-sm text-slate-600 md:block">{place.category}</span>
-              <span className="hidden text-sm text-slate-600 md:block">{place.visibility}</span>
+              <span className="text-sm text-slate-600">{place.category}</span>
+              <span className="text-sm text-slate-600">{place.visibility}</span>
               <div className="flex items-center gap-2">
                 <Link
                   href={`/admin/places/edit/${place.id}`}
@@ -231,6 +234,7 @@ export function AdminPlacesClient() {
         ) : (
           <div className="p-6 text-sm text-slate-500">No places found.</div>
         )}
+        </div>
       </div>
 
       {isBulkOpen ? (

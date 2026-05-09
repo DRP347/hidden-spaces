@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
+  ArrowDown,
   Compass,
   Search,
   Shuffle,
@@ -202,6 +203,14 @@ function HeroDock({
         categories={categories}
         onCategoryChange={onCategoryChange}
       />
+      <a
+        href="#spots"
+        className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-full px-1 text-[13px] font-semibold text-[#6a5e4f] transition hover:text-[#151515] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C]"
+        aria-label="Scroll to field notes"
+      >
+        <span>Drag map · scroll for notes</span>
+        <ArrowDown className="h-4 w-4" aria-hidden="true" />
+      </a>
     </aside>
   );
 }

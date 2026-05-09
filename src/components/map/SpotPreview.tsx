@@ -19,22 +19,22 @@ export function SpotPreview({
   if (!spot) return null;
 
   return (
-    <aside className="spot-preview glass-panel pointer-events-auto absolute inset-x-3 bottom-3 z-30 mx-auto max-h-[70svh] max-w-xl overflow-hidden rounded-[28px] sm:inset-x-auto sm:bottom-8 sm:right-6 sm:max-h-[calc(100svh-150px)] sm:w-[360px] sm:rounded-[30px] lg:right-10 lg:top-[188px] lg:bottom-auto">
+    <aside className="spot-preview glass-panel pointer-events-auto !fixed inset-x-3 bottom-3 z-40 mx-auto max-h-[58dvh] max-w-xl overflow-hidden rounded-[28px] sm:!absolute sm:inset-x-auto sm:bottom-8 sm:right-6 sm:z-30 sm:max-h-[calc(100svh-150px)] sm:w-[360px] sm:rounded-[30px] lg:right-10 lg:top-[188px] lg:bottom-auto">
       <button
         type="button"
         aria-label="Close selected place preview"
         onClick={onClose}
-        className="absolute left-3 top-3 z-20 grid h-9 w-9 place-items-center rounded-full border border-white/70 bg-white/72 text-[#25313D] shadow-sm backdrop-blur transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C]"
+        className="absolute right-3 top-3 z-20 grid h-9 w-9 place-items-center rounded-full border border-white/70 bg-white/78 text-[#25313D] shadow-sm backdrop-blur transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4E8C] sm:left-3 sm:right-auto"
       >
         <X className="h-4 w-4" />
       </button>
 
-      <div className="max-h-[70svh] overflow-y-auto overscroll-contain p-3 sm:max-h-[calc(100svh-150px)]">
-        <div className="relative aspect-[16/9] overflow-hidden rounded-[22px] bg-[#EADDC8]">
+      <div className="max-h-[58dvh] overflow-y-auto overscroll-contain p-3 sm:max-h-[calc(100svh-150px)]">
+        <div className="relative hidden aspect-[16/9] overflow-hidden rounded-[22px] bg-[#EADDC8] sm:block">
           <SpotVisual spot={spot} className="h-full" showBadge={false} />
         </div>
 
-        <div className="px-1 pb-2 pt-4 sm:px-2">
+        <div className="px-1 pb-2 pr-11 pt-1 sm:px-2 sm:pt-4">
           <div className="flex flex-wrap items-center gap-2">
             <span
               className="inline-flex items-center gap-2 rounded-full bg-[#FFF7EA] px-3 py-1.5 text-[11px] font-bold text-[#9E3F2F] ring-1 ring-[#D99A3D]/18"
@@ -48,11 +48,11 @@ export function SpotPreview({
             </span>
           </div>
 
-          <h2 className="mt-3 max-w-sm text-balance font-display text-[2rem] font-semibold leading-[0.98] tracking-[-0.045em] text-[#151515] sm:text-[2.35rem]">
+          <h2 className="mt-3 max-w-sm text-balance font-display text-[1.85rem] font-semibold leading-[1] tracking-[-0.045em] text-[#151515] sm:text-[2.35rem] sm:leading-[0.98]">
             {spot.name}
           </h2>
 
-          <p className="mt-3 text-[14px] leading-6 text-[#514638]">{spot.description}</p>
+          <p className="mt-3 max-h-12 overflow-hidden text-[14px] leading-6 text-[#514638] sm:max-h-none">{spot.description}</p>
 
           <div className="mt-4 rounded-2xl border border-[#EADDC8]/80 bg-[#F7EFE1]/76 px-3.5 py-3 text-xs font-semibold leading-5 text-[#8a6845]">
             <span className="inline-flex items-center gap-1.5 text-[#D0802F]">

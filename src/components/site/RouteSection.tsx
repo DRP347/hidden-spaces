@@ -1,4 +1,4 @@
-import { ArrowRight, Clock3, MapPinned } from "lucide-react";
+import { Clock3, MapPinned } from "lucide-react";
 
 import { ImageWithFallback } from "@/components/site/ImageWithFallback";
 
@@ -59,7 +59,7 @@ export function RouteSection() {
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {routes.map((route) => (
-            <article key={route.title} className="group overflow-hidden rounded-[26px] bg-[#FFFDF8] shadow-[0_18px_54px_rgba(75,55,29,0.1)] ring-1 ring-[#eadcc8] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_96px_rgba(75,55,29,0.15)] sm:rounded-[30px]">
+            <article key={route.title} className="overflow-hidden rounded-[26px] bg-[#FFFDF8] shadow-[0_16px_48px_rgba(75,55,29,0.09)] ring-1 ring-[#eadcc8] sm:rounded-[30px]">
               <div className="relative aspect-[16/10] overflow-hidden sm:aspect-[16/9]">
                 <ImageWithFallback
                   src={route.imageSrc}
@@ -67,7 +67,6 @@ export function RouteSection() {
                   fallbackClassName={route.gradientFallback}
                   sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
                   label={route.mood}
-                  className="transition duration-700 group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(21,21,21,0.02),rgba(21,21,21,0.48))]" />
                 <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-[#FFFDF8]/86 px-3 py-1.5 text-xs font-bold text-[#473b2e] shadow-sm ring-1 ring-white/70 backdrop-blur">
@@ -78,7 +77,6 @@ export function RouteSection() {
               <div className="p-4 sm:p-5">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#9E3F2F]">{route.mood}</p>
-                  <ArrowRight className="h-4 w-4 text-[#D99A3D] transition group-hover:translate-x-1" />
                 </div>
                 <h3 className="text-balance font-display text-[1.55rem] font-semibold leading-[1.04] tracking-[-0.035em] text-[#151515] sm:text-3xl">
                   {route.title}

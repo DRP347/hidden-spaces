@@ -32,7 +32,7 @@ export function SpotDetailsModal({
   if (!spot) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#151515]/36 p-0 backdrop-blur-[2px] sm:items-center sm:p-5">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#151515]/24 p-0 backdrop-blur-[1px] sm:items-center sm:p-5">
       <button
         type="button"
         aria-label="Close field note"
@@ -43,10 +43,10 @@ export function SpotDetailsModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="spot-dialog-title"
-        className="relative max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-t-[30px] bg-[#FFFDF8] pb-[env(safe-area-inset-bottom)] shadow-[0_30px_120px_rgba(21,21,21,0.28)] ring-1 ring-white/70 sm:rounded-[34px] sm:pb-0"
+        className="relative max-h-[92dvh] w-full max-w-[52rem] overflow-y-auto rounded-t-[28px] bg-[#FFFDF8] pb-[env(safe-area-inset-bottom)] shadow-[0_24px_86px_rgba(21,21,21,0.22)] ring-1 ring-white/70 sm:rounded-[32px] sm:pb-0"
       >
         <div className="relative">
-          <SpotVisual spot={spot} priority className="aspect-[16/11] rounded-t-[30px] sm:aspect-[16/10] sm:rounded-t-[34px]" />
+          <SpotVisual spot={spot} priority className="aspect-[16/10] max-h-[40svh] rounded-t-[28px] sm:aspect-[16/7] sm:rounded-t-[32px]" />
           <button
             type="button"
             aria-label="Close field note"
@@ -56,19 +56,19 @@ export function SpotDetailsModal({
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="grid gap-5 p-4 sm:gap-6 sm:p-7">
+        <div className="grid gap-4 p-4 sm:gap-5 sm:p-6">
           <div>
             <p className="text-sm font-bold text-[#9E3F2F]">{spot.category} · {spot.area}</p>
-            <h2 id="spot-dialog-title" className="mt-2 max-w-2xl text-balance font-display text-[2.35rem] font-semibold leading-[0.96] tracking-[-0.045em] text-[#151515] sm:text-5xl">
+            <h2 id="spot-dialog-title" className="mt-2 max-w-2xl text-balance font-display text-[2.15rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#151515] sm:text-[3rem]">
               {spot.name}
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-[#5b4f42]">{spot.longDescription}</p>
+            <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#5b4f42] sm:text-base">{spot.longDescription}</p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3">
             <InfoPill icon={<Clock3 className="h-4 w-4" />} label="Best time" value={spot.bestTime} />
             <InfoPill icon={<Compass className="h-4 w-4" />} label="Mood" value={spot.mood} />
-            <InfoPill icon={<MapPin className="h-4 w-4" />} label="Coordinates" value={`${spot.coordinates.lat.toFixed(3)}, ${spot.coordinates.lng.toFixed(3)}`} />
+            <InfoPill icon={<MapPin className="h-4 w-4" />} label="Map pin" value={`${spot.coordinates.lat.toFixed(3)}, ${spot.coordinates.lng.toFixed(3)}`} />
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
