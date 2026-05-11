@@ -1,6 +1,10 @@
+import Link from "next/link";
+
 import { spotCategories } from "@/types/spot";
 
-export function SiteFooter() {
+export function SiteFooter({ counts }: { counts: Record<string, number> }) {
+  const visibleCategories = spotCategories.filter((category) => (counts[category] ?? 0) > 0);
+
   return (
     <footer className="border-t border-[#e8dac5] bg-[#FFFDF8]" aria-labelledby="footer-title">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:py-12 lg:grid-cols-[1.2fr_0.8fr]">
@@ -14,11 +18,19 @@ export function SiteFooter() {
           <p className="mt-4 text-sm font-semibold text-[#395B45]">
             Built as a living field map for slower weekends, photo walks, and local-first travel.
           </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Link href="/about" className="secondary-button min-h-10 px-4 text-xs">
+              About
+            </Link>
+            <Link href="/submit" className="secondary-button min-h-10 px-4 text-xs">
+              Submit a hidden spot
+            </Link>
+          </div>
         </div>
         <nav aria-label="Footer categories">
           <p className="text-sm font-bold text-[#151515]">Explore by mood</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            {spotCategories.map((category) => (
+            {visibleCategories.map((category) => (
               <a
                 key={category}
                 href="#spots"

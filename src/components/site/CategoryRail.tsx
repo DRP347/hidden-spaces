@@ -13,7 +13,12 @@ export function CategoryRail({
   counts: Record<string, number>;
   onChange: (category: ActiveCategory) => void;
 }) {
-  const categories: ActiveCategory[] = ["All", ...spotCategories];
+  const categories: ActiveCategory[] = [
+    "All",
+    ...spotCategories.filter(
+      (category) => (counts[category] ?? 0) > 0 || activeCategory === category,
+    ),
+  ];
 
   return (
     <section

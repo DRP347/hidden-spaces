@@ -1,6 +1,6 @@
 import { HomeExperience } from "@/components/site/HomeExperience";
 import { getPublicSpots } from "@/lib/publicSpots";
-import { createDestinationJsonLd, createItemListJsonLd } from "@/lib/site";
+import { createDestinationJsonLd, createItemListJsonLd, createWebsiteJsonLd } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -9,7 +9,7 @@ export default async function Home() {
   const result = await getPublicSpots();
   const spots = result.spots;
   const featuredSpots = spots.filter((spot) => spot.isFeatured);
-  const jsonLd = [createDestinationJsonLd(), createItemListJsonLd(featuredSpots)];
+  const jsonLd = [createWebsiteJsonLd(), createDestinationJsonLd(), createItemListJsonLd(featuredSpots)];
 
   return (
     <>

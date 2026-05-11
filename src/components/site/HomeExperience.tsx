@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { MapHero } from "@/components/map/MapHero";
 import type { ActiveCategory } from "@/components/site/CategoryRail";
+import { CommunitySubmitSection } from "@/components/site/CommunitySubmitSection";
 import { FieldNotesSection } from "@/components/site/FieldNotesSection";
 import { PlanningSection } from "@/components/site/PlanningSection";
 import { RouteSection } from "@/components/site/RouteSection";
@@ -129,9 +130,10 @@ export function HomeExperience({
         }}
       />
 
+      <CommunitySubmitSection />
       <RouteSection />
       <PlanningSection />
-      <SiteFooter />
+      <SiteFooter counts={counts} />
       <SpotDetailsModal spot={detailSpot} onClose={() => setDetailSpot(null)} />
     </main>
   );

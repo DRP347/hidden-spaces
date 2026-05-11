@@ -3,8 +3,10 @@
 import { Clock3, Compass, ExternalLink, MapPin, X } from "lucide-react";
 import { useEffect } from "react";
 
+import { ShareButtons } from "@/components/share/ShareButtons";
 import { SpotVisual } from "@/components/site/SpotVisual";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { getSpotUrl } from "@/lib/seo";
 import { getGoogleMapsUrl } from "@/lib/site";
 import type { Spot } from "@/types/spot";
 
@@ -84,15 +86,18 @@ export function SpotDetailsModal({
             ))}
           </div>
 
-          <a
-            href={getGoogleMapsUrl(spot)}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#1E4E8C] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#153c6d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D99A3D]"
-          >
-            Open in Google Maps
-            <ExternalLink className="h-4 w-4" />
-          </a>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <ShareButtons title={spot.name} url={getSpotUrl(spot)} />
+            <a
+              href={getGoogleMapsUrl(spot)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#1E4E8C] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#153c6d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D99A3D]"
+            >
+              Open in Google Maps
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </section>
     </div>

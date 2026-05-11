@@ -1,5 +1,6 @@
 import type { Spot } from "@/types/spot";
 import { getSpotImageSrc } from "@/lib/images";
+import { getCanonicalUrl, getSpotUrl } from "@/lib/seo";
 
 export function getGoogleMapsUrl(spot: Pick<Spot, "coordinates">) {
   const query = `${spot.coordinates.lat},${spot.coordinates.lng}`;
@@ -28,6 +29,7 @@ export function createItemListJsonLd(spots: Spot[]) {
         "@type": "TouristAttraction",
         name: spot.name,
         description: spot.description,
+        url: getSpotUrl(spot),
         ...(getSpotImageSrc(spot) ? { image: getSpotImageSrc(spot) } : {}),
         address: {
           "@type": "PostalAddress",
@@ -42,6 +44,18 @@ export function createItemListJsonLd(spots: Spot[]) {
         },
       },
     })),
+  };
+}
+
+export function createWebsiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Hidden Spaces Daman",
+    url: getCanonicalUrl("/"),
+    description:
+      "A local field guide for quiet beaches, old lanes, cafés, sunrise spots, sunset corners, and hidden places around Daman.",
+    inLanguage: "en-IN",
   };
 }
 
