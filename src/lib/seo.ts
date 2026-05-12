@@ -32,7 +32,9 @@ export function createSpotMetadata(spot: Spot): Metadata {
   const url = getSpotUrl(spot);
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description,
     alternates: {
       canonical: url,

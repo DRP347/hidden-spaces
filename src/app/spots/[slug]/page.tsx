@@ -59,63 +59,67 @@ export default async function SpotPage({ params }: SpotPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <Link
-          href="/#spots"
+          href="/"
           className="secondary-button mb-4 w-fit bg-white/60 px-4 text-[#5d5143]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to map
         </Link>
 
-        <article className="overflow-hidden rounded-[32px] bg-[#FFFDF8] shadow-[0_24px_90px_rgba(75,55,29,0.12)] ring-1 ring-[#eadcc8]">
-          <div className="relative aspect-[16/10] max-h-[440px] sm:aspect-[16/8]">
-            <SpotVisual spot={spot} priority className="h-full" />
+        <article className="overflow-hidden rounded-[30px] bg-[#FFFDF8] shadow-[0_24px_90px_rgba(75,55,29,0.10)] ring-1 ring-[#eadcc8] sm:rounded-[34px]">
+          <div className="relative aspect-[16/11] max-h-[500px] sm:aspect-[16/8] lg:aspect-[16/7]">
+            <SpotVisual spot={spot} priority className="h-full" showBadge={false} showOverlay={false} />
+            <div className="absolute left-4 top-4 rounded-full bg-[#FFFDF8]/88 px-3 py-1 text-xs font-bold text-[#151515] shadow-sm ring-1 ring-white/60 backdrop-blur">
+              {spot.category}
+            </div>
           </div>
-          <div className="grid gap-6 p-5 sm:p-8 lg:grid-cols-[1fr_320px] lg:gap-8">
-            <div>
-              <p className="text-sm font-bold text-[#9E3F2F]">{spot.category} · {spot.area}</p>
-              <h1 className="mt-2 max-w-3xl text-balance font-display text-[2.6rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl">
-                {spot.name}
-              </h1>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-[#5b4f42] sm:text-lg">
-                {spot.longDescription || spot.description}
-              </p>
+          <div className="p-5 sm:p-8 lg:p-10">
+            <p className="text-sm font-bold text-[#9E3F2F]">{spot.category} · {spot.area}</p>
+            <h1 className="mt-2 max-w-3xl text-balance font-display text-[2.65rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl">
+              {spot.name}
+            </h1>
+            <p className="mt-4 max-w-3xl text-base leading-7 text-[#5b4f42] sm:text-lg">
+              {spot.longDescription || spot.description}
+            </p>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                <InfoCard icon={<Clock3 className="h-4 w-4" />} label="Best time" value={spot.bestTime} />
-                <InfoCard icon={<Compass className="h-4 w-4" />} label="Mood" value={spot.mood} />
-                <InfoCard icon={<MapPin className="h-4 w-4" />} label="Area" value={spot.area} />
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <Note title="Travel tip" text={spot.travelTip} />
-                <Note title="Nearby hint" text={spot.nearbyHint} />
-              </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <InfoCard icon={<Clock3 className="h-4 w-4" />} label="Best time" value={spot.bestTime} />
+              <InfoCard icon={<Compass className="h-4 w-4" />} label="Mood" value={spot.mood} />
+              <InfoCard icon={<MapPin className="h-4 w-4" />} label="Area" value={spot.area} />
             </div>
 
-            <aside className="h-fit rounded-[26px] border border-[#eadcc8] bg-[#F8F1E7] p-4">
-              <p className="text-sm font-bold text-[#151515]">Share this field note</p>
-              <ShareButtons title={spot.name} url={getSpotUrl(spot)} className="mt-3" />
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              <Note title="Travel tip" text={spot.travelTip} />
+              <Note title="Nearby hint" text={spot.nearbyHint} />
+            </div>
 
-              <div className="mt-5 flex flex-wrap gap-2">
-                {spot.tags.slice(0, 5).map((tag) => (
-                  <span key={tag} className="rounded-full bg-[#EFF4EF] px-3 py-1.5 text-xs font-semibold text-[#4d6d62]">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {spot.tags.slice(0, 5).map((tag) => (
+                <span key={tag} className="rounded-full bg-[#EFF4EF] px-3 py-1.5 text-xs font-semibold text-[#4d6d62]">
+                  {tag}
+                </span>
+              ))}
+            </div>
 
+            <div className="mt-6 flex flex-col gap-4 border-t border-[#eadcc8] pt-5 lg:flex-row lg:items-center lg:justify-between">
               <a
                 href={getGoogleMapsUrl(spot)}
                 target="_blank"
                 rel="noreferrer"
-                className="primary-button mt-5 w-full"
+                className="primary-button w-full sm:w-fit"
               >
                 Open in Google Maps
                 <ExternalLink className="h-4 w-4" />
               </a>
-            </aside>
+              <div>
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-[#8a785e]">
+                  Share this field note
+                </p>
+                <ShareButtons title={spot.name} url={getSpotUrl(spot)} />
+              </div>
+            </div>
           </div>
         </article>
       </div>

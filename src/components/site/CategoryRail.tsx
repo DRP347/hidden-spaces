@@ -15,9 +15,7 @@ export function CategoryRail({
 }) {
   const categories: ActiveCategory[] = [
     "All",
-    ...spotCategories.filter(
-      (category) => (counts[category] ?? 0) > 0 || activeCategory === category,
-    ),
+    ...spotCategories.filter((category) => (counts[category] ?? 0) > 0),
   ];
 
   return (

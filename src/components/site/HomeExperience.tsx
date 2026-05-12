@@ -25,6 +25,13 @@ export function HomeExperience({
   const [detailSpot, setDetailSpot] = useState<Spot | null>(null);
 
   const counts = useMemo(() => getCategoryCounts(spots), [spots]);
+
+  useEffect(() => {
+    if (activeCategory !== "All" && (counts[activeCategory] ?? 0) === 0) {
+      setActiveCategory("All");
+    }
+  }, [activeCategory, counts]);
+
   const filteredSpots = useMemo(() => {
     const normalized = query.trim().toLowerCase();
 

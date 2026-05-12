@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight, Shuffle } from "lucide-react";
 
 import { CategoryRail, type ActiveCategory } from "@/components/site/CategoryRail";
@@ -46,14 +47,13 @@ export function FieldNotesSection({
             Simple field notes for beaches, lanes, cafés, sunrise points, and slow walks.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={onReset}
+        <Link
+          href="/spots"
           className="secondary-button w-fit bg-transparent px-5 text-[#5d5143]"
         >
           View all spots
           <ArrowRight className="h-4 w-4" />
-        </button>
+        </Link>
       </div>
 
       <CategoryRail

@@ -29,6 +29,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    {
+      url: getCanonicalUrl("/spots"),
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
   ];
 
   const spotRoutes: MetadataRoute.Sitemap = result.spots.map((spot) => ({
