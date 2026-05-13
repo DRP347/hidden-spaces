@@ -29,11 +29,13 @@ type PlaceFormMode = "create" | "edit";
 type FormState = {
   name: string;
   slug: string;
+  area: string;
   category: PlaceCategory;
   coordinateInput: string;
   lat: number;
   lng: number;
   description: string;
+  notes: string;
   coverImageUrl: string;
   coverPublicId: string;
   galleryUrls: string;
@@ -252,9 +254,11 @@ export function PlaceForm({
     const payload = {
       name: state.name,
       slug: state.slug || slugify(state.name),
+      area: state.area,
       category: state.category,
       coordinates: { lat: state.lat, lng: state.lng },
       description: state.description,
+      notes: state.notes,
       images: {
         cover: coverImage,
         gallery: [...state.galleryImages, ...manualGallery],
@@ -338,6 +342,14 @@ export function PlaceForm({
               ))}
             </select>
           </Field>
+          <Field label="Area">
+            <input
+              value={state.area}
+              onChange={(event) => update("area", event.target.value)}
+              className={fieldClass}
+              placeholder="Moti Daman, Nani Daman, Devka..."
+            />
+          </Field>
           <Field label="Description">
             <textarea
               value={state.description}
@@ -345,6 +357,15 @@ export function PlaceForm({
               rows={4}
               className={fieldClass}
               required
+            />
+          </Field>
+          <Field label="Public field note / travel tip">
+            <textarea
+              value={state.notes}
+              onChange={(event) => update("notes", event.target.value)}
+              rows={3}
+              className={fieldClass}
+              placeholder="Extra context shown on spot detail pages."
             />
           </Field>
         </Panel>
@@ -753,11 +774,13 @@ function toFormState(place?: Place): FormState {
   return {
     name: place?.name ?? "",
     slug: place?.slug ?? "",
+    area: place?.area ?? "Daman",
     category: place?.category ?? "Peaceful",
     coordinateInput: "",
     lat: place?.coordinates.lat ?? 20.4142,
     lng: place?.coordinates.lng ?? 72.8321,
     description: place?.description ?? "",
+    notes: place?.notes ?? "",
     coverImageUrl: place?.coverImage.url ?? "",
     coverPublicId: place?.coverImage.publicId ?? "",
     galleryUrls: "",

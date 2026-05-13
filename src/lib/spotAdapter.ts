@@ -76,6 +76,8 @@ function toSpotCategory(category: PlaceCategory): SpotCategory {
 }
 
 function inferArea(place: Place) {
+  if (place.area) return place.area;
+
   const haystack = `${place.name} ${place.slug} ${place.description}`.toLowerCase();
 
   if (haystack.includes("moti")) return "Moti Daman";

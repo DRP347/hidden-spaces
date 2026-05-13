@@ -21,6 +21,7 @@ type DatabasePlaceRecord = {
   id?: unknown;
   slug?: string;
   name?: string;
+  area?: string;
   category?: PlaceCategory;
   coordinates?: Place["coordinates"] | null;
   description?: string;
@@ -132,6 +133,7 @@ export function toPlace(record: DatabasePlaceRecord): Place {
     id,
     slug,
     name,
+    area: record.area ?? inferAreaFromRecord(record),
     category: normalizeCategory(record.category),
     coordinates: record.coordinates ?? fallback.coordinates,
     description: record.description ?? "",
@@ -148,6 +150,20 @@ export function toPlace(record: DatabasePlaceRecord): Place {
     notes: record.notes ?? "",
     nearbySlugs: record.nearbySlugs ?? [],
   };
+}
+
+function inferAreaFromRecord(record: Pick<DatabasePlaceRecord, "name" | "slug" | "description">) {
+  const haystack = `${record.name ?? ""} ${record.slug ?? ""} ${record.description ?? ""}`.toLowerCase();
+
+  if (haystack.includes("moti")) return "Moti Daman";
+  if (haystack.includes("nani") || haystack.includes("jetty")) return "Nani Daman";
+  if (haystack.includes("devka")) return "Devka";
+  if (haystack.includes("jampore")) return "Jampore";
+  if (haystack.includes("lighthouse") || haystack.includes("chapel") || haystack.includes("fort")) {
+    return "Moti Daman";
+  }
+
+  return "Daman";
 }
 
 function placesFallbackResult(dbStatus: MongoStatus, includePrivate: boolean): PlacesResult {

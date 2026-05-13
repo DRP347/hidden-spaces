@@ -12,6 +12,7 @@ const PlaceSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, index: true },
+    area: { type: String, default: "Daman", trim: true },
     category: {
       type: String,
       default: "Peaceful",
@@ -37,6 +38,7 @@ const PlaceSchema = new Schema(
       gallery: { type: [CloudinaryImageSchema], default: [] },
     },
     tags: { type: [String], default: [] },
+    notes: { type: String, default: "", trim: true },
     bestTime: { type: String, default: "" },
     crowdLevel: {
       type: String,

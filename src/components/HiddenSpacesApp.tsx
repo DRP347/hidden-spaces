@@ -177,6 +177,7 @@ export function HiddenSpacesApp() {
       id,
       slug: placeSlug || id,
       name: draft.name.trim(),
+      area: "Daman",
       category: draft.category,
       coordinates: { lat, lng },
       description: draft.description.trim(),

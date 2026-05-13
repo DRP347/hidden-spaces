@@ -33,6 +33,7 @@ export type Place = {
   id: string;
   slug: string;
   name: string;
+  area: string;
   category: PlaceCategory;
   coordinates: {
     lat: number;
@@ -43,12 +44,12 @@ export type Place = {
   image: PlaceImage;
   gallery: PlaceImage[];
   tags: string[];
+  notes: string;
   bestTime: string;
   crowdLevel: CrowdLevel;
   safetyLevel: SafetyLevel;
   parking: string;
   visibility: PlaceVisibility;
-  notes: string;
   nearbySlugs: string[];
 };
 

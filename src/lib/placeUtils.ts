@@ -23,6 +23,7 @@ const visibilityOptions: PlaceVisibility[] = ["Public", "Private"];
 export type PlacePayload = {
   name: string;
   slug: string;
+  area: string;
   category: PlaceCategory;
   coordinates: {
     lat: number;
@@ -30,6 +31,7 @@ export type PlacePayload = {
   };
   description: string;
   tags: string[];
+  notes: string;
   images: {
     cover: ImageAsset;
     gallery: ImageAsset[];
@@ -123,6 +125,7 @@ export function sanitizePlacePayload(input: unknown): PlacePayload {
   const record = input as Record<string, unknown>;
   const name = stringField(record.name, "Place name");
   const slug = slugify(stringField(record.slug, "Slug", slugify(name))) || slugify(name);
+  const area = stringField(record.area, "Area", "Daman");
   const category = enumField<PlaceCategory>(
     record.category,
     placeCategories,
@@ -166,6 +169,7 @@ export function sanitizePlacePayload(input: unknown): PlacePayload {
     "Public",
   );
   const tags = stringArray(record.tags);
+  const notes = stringField(record.notes, "Notes", "");
   const coverImage = imageAssetField(
     nestedValue(record.images, "cover") ??
       record.coverImage ??
@@ -184,10 +188,12 @@ export function sanitizePlacePayload(input: unknown): PlacePayload {
   return {
     slug,
     name,
+    area,
     category,
     coordinates: { lat, lng },
     description,
     tags,
+    notes,
     images: {
       cover: coverImage,
       gallery,
@@ -204,9 +210,11 @@ export function placeToFormPayload(place: Place): PlacePayload {
   return {
     slug: place.slug,
     name: place.name,
+    area: place.area,
     category: place.category,
     coordinates: place.coordinates,
     description: place.description,
+    notes: place.notes,
     images: {
       cover: {
         url: place.coverImage.url,

@@ -173,7 +173,8 @@ export function SubmitSpotForm() {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-md text-xs leading-5 text-[#7a6d5b]">
-          Contact is optional. Share it only if you want an update when the spot is added.
+          Submissions are reviewed before publishing so the map stays useful.
+          Contact is optional if you want an update when the spot is added.
         </p>
         <button type="submit" disabled={isSubmitting} className="primary-button">
           <Send className="h-4 w-4" />

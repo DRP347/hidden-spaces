@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { noStoreHeaders } from "@/lib/apiResponses";
 import { getMongoStatus } from "@/lib/mongodb";
+import { parseCoordinatePair } from "@/lib/placeUtils";
 import { SpotSubmissionModel } from "@/models/SpotSubmission";
 import { spotCategories, type SpotCategory } from "@/types/spot";
 
@@ -13,8 +14,10 @@ type SubmissionPayload = {
   area?: unknown;
   category?: unknown;
   reason?: unknown;
+  description?: unknown;
   bestTime?: unknown;
   mapsLink?: unknown;
+  coordinates?: unknown;
   submitterName?: unknown;
   submitterContact?: unknown;
   notes?: unknown;
@@ -85,13 +88,19 @@ export async function POST(request: NextRequest) {
 }
 
 function sanitizeSubmission(payload: SubmissionPayload) {
+  const mapsLink = clean(payload.mapsLink, 500);
+  const parsedCoordinates =
+    parseCoordinatePair(payload.coordinates) ?? parseCoordinatePair(mapsLink);
+
   return {
     name: clean(payload.name),
     area: clean(payload.area),
     category: normalizeCategory(payload.category),
     reason: clean(payload.reason, 1200),
+    description: clean(payload.description, 1200),
     bestTime: clean(payload.bestTime, 160),
-    mapsLink: clean(payload.mapsLink, 500),
+    mapsLink,
+    coordinates: parsedCoordinates ?? undefined,
     submitterName: clean(payload.submitterName),
     submitterContact: clean(payload.submitterContact, 180),
     notes: clean(payload.notes, 1000),

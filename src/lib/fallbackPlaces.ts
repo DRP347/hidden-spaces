@@ -13,6 +13,7 @@ function spotToFallbackPlace(spot: Spot): Place {
     id: spot.id,
     slug: spot.slug,
     name: spot.name,
+    area: spot.area,
     category: toPlaceCategory(spot.category),
     coordinates: spot.coordinates,
     description: spot.description,

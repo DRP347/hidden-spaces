@@ -1,5 +1,13 @@
 import mongoose, { Schema, type InferSchemaType, type Model } from "mongoose";
 
+const SubmissionCoordinatesSchema = new Schema(
+  {
+    lat: { type: Number },
+    lng: { type: Number },
+  },
+  { _id: false },
+);
+
 const SpotSubmissionSchema = new Schema(
   {
     name: { type: String, required: true, trim: true, maxlength: 120 },
@@ -19,17 +27,24 @@ const SpotSubmissionSchema = new Schema(
       ],
     },
     reason: { type: String, required: true, trim: true, maxlength: 1200 },
+    description: { type: String, default: "", trim: true, maxlength: 1200 },
     bestTime: { type: String, default: "", trim: true, maxlength: 160 },
     mapsLink: { type: String, default: "", trim: true, maxlength: 500 },
+    coordinates: { type: SubmissionCoordinatesSchema, default: undefined },
     submitterName: { type: String, default: "", trim: true, maxlength: 120 },
     submitterContact: { type: String, default: "", trim: true, maxlength: 180 },
     notes: { type: String, default: "", trim: true, maxlength: 1000 },
     status: {
       type: String,
-      enum: ["pending", "reviewed", "approved", "rejected"],
+      enum: ["pending", "approved", "rejected"],
       default: "pending",
       index: true,
     },
+    adminNotes: { type: String, default: "", trim: true, maxlength: 2000 },
+    reviewedAt: { type: Date },
+    approvedAt: { type: Date },
+    rejectedAt: { type: Date },
+    convertedPlaceId: { type: Schema.Types.ObjectId, ref: "Place" },
   },
   { timestamps: true, collection: "spot_submissions" },
 );
